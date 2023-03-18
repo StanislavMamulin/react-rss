@@ -1,0 +1,18 @@
+.info__wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.info__title {
+  text-align: left;
+  font-weight: bold;
+  margin: 0;
+}
+
+.info__detail {
+  text-align: right;
+  word-break: break-word;
+  margin: 0;
+}
