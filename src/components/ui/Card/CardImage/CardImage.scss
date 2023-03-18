@@ -1,0 +1,11 @@
+$image-size: 100px;
+
+.card-image__wrapper {
+  width: $image-size;
+  height: $image-size;
+}
+
+.country__flag {
+  font-size: $image-size;
+  line-height: 1.1;
+}
