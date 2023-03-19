@@ -8,6 +8,7 @@ $search-icon-size: calc($font-size - $default-padding);
   justify-content: center;
   align-items: center;
   position: relative;
+  width: max(280px, 20vw);
 }
 
 .search-bar__icon {
@@ -19,6 +20,7 @@ $search-icon-size: calc($font-size - $default-padding);
 }
 
 .search-bar__input {
+  width: 100%;
   font-size: $font-size;
   border-radius: $border-radius;
   padding-left: calc($search-icon-size + $default-padding * 2);
