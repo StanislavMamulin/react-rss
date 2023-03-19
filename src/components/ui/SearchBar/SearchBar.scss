@@ -9,6 +9,8 @@ $search-icon-size: calc($font-size - $default-padding);
   align-items: center;
   position: relative;
   width: max(280px, 20vw);
+  margin-bottom: 16px;
+  margin-right: 24px;
 }
 
 .search-bar__icon {
