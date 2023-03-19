@@ -25,16 +25,27 @@
 
   color: whitesmoke;
   text-shadow: 1px 1px rgba(0, 0, 0, 0.2);
-
-  &:hover {
-    box-shadow: inset 0 -4px 0 0 #239ED0;
-  }
 }
 
 .navbar__link {
   color: whitesmoke;
+  text-decoration: none;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   &:hover {
-    color: whitesmoke;
+    box-shadow: inset 0 -4px 0 0 #239ED0;
+  }
+
+  &_active {
+    @extend .navbar__link;
+    color: #239ED0;
+  }
+
+  &_active:hover {
+    color: #1A7499;
+    box-shadow: none;
   }
 }

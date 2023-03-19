@@ -1,6 +1,9 @@
 import { PureComponent, ReactNode } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import './Navbar.scss';
+
+const LINK_CLASS = 'navbar__link';
+const ACTIVE_LINK_CLASS = 'navbar__link_active';
 
 export class Navbar extends PureComponent {
   render(): ReactNode {
@@ -8,14 +11,20 @@ export class Navbar extends PureComponent {
       <nav>
         <ul className="navbar__list">
           <li className="navbar__item">
-            <Link to="/" className="navbar__link">
+            <NavLink
+              to="/"
+              className={({ isActive }) => (isActive ? ACTIVE_LINK_CLASS : LINK_CLASS)}
+            >
               Main page
-            </Link>
+            </NavLink>
           </li>
           <li className="navbar__item">
-            <Link to="/about" className="navbar__link">
+            <NavLink
+              to="/about"
+              className={({ isActive }) => (isActive ? ACTIVE_LINK_CLASS : LINK_CLASS)}
+            >
               About Us
-            </Link>
+            </NavLink>
           </li>
         </ul>
       </nav>
