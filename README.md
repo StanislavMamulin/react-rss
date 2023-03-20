@@ -14,6 +14,6 @@ npm run lint
 
 - Running tests and displaying a coverage report:
 ```
-npm run coverage
+npm run test
 ```
 
