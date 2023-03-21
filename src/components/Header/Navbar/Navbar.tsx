@@ -15,7 +15,15 @@ export class Navbar extends PureComponent {
               to="/"
               className={({ isActive }) => (isActive ? ACTIVE_LINK_CLASS : LINK_CLASS)}
             >
-              Main page
+              All countries
+            </NavLink>
+          </li>
+          <li className="navbar__item">
+            <NavLink
+              to="/create"
+              className={({ isActive }) => (isActive ? ACTIVE_LINK_CLASS : LINK_CLASS)}
+            >
+              Create your world
             </NavLink>
           </li>
           <li className="navbar__item">
