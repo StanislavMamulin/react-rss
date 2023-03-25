@@ -1,21 +1,32 @@
-import { PureComponent, ReactNode } from 'react';
+import { createRef, PureComponent, ReactNode, RefObject } from 'react';
 
 import './CreateCountry.scss';
+import { Label } from './Label';
 
 export class LandLocked extends PureComponent {
+  landlockedInput: RefObject<HTMLInputElement> = createRef();
+  notLandlockedInput: RefObject<HTMLInputElement> = createRef();
+
   render(): ReactNode {
     return (
       <div className="create__landlocked-container">
-        <p>Landlocked:</p>
-        <label className="create__label">
-          <input type="radio" name="landlocked-option" value="yes" />
-          Yes
-        </label>
-        <label className="create__label">
-          <input type="radio" name="landlocked-option" value="no" />
-          No
-        </label>
+        <Label title="Landlocked:">
+          <label className="create__label">
+            <input type="radio" name="landlocked" value="yes" ref={this.landlockedInput} />
+            Yes
+          </label>
+          <label className="create__label">
+            <input type="radio" name="landlocked" value="no" ref={this.notLandlockedInput} />
+            No
+          </label>
+        </Label>
       </div>
+    );
+  }
+
+  validate(): boolean {
+    return Boolean(
+      this.landlockedInput.current?.checked || this.notLandlockedInput.current?.checked
     );
   }
 }
