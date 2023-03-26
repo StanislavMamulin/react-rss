@@ -22,3 +22,26 @@
   
   object-fit: contain;
 }
+
+.created {
+  width: 100%;
+  height: 300px;
+  position: fixed;
+  border-radius: 10px;
+
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 2s forwards;
+}
+
+@keyframes fadeIn {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+.created__text {
+  color: white;
+  font-size: 32px;
+}

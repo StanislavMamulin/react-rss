@@ -11,19 +11,28 @@ type CreatePageProps = Record<string, null>;
 type CreatePageState = {
   fantasyCountries: Country[];
   errorMessage: string;
+  successMessageShow: boolean;
 };
 
 export class CreatePage extends PureComponent<CreatePageProps, CreatePageState> {
   state: CreatePageState = {
     fantasyCountries: [],
     errorMessage: '',
+    successMessageShow: false,
   };
 
   addCardHandler = (country: Country) => {
     this.setState((prevState) => ({
       fantasyCountries: [...prevState.fantasyCountries, country],
       errorMessage: '',
+      successMessageShow: true,
     }));
+
+    setTimeout(() => {
+      this.setState({
+        successMessageShow: false,
+      });
+    }, 1000);
   };
 
   isCountryExist = (country: Country): boolean => {
@@ -41,9 +50,18 @@ export class CreatePage extends PureComponent<CreatePageProps, CreatePageState> 
     return false;
   };
 
+  successfullyCreated = (): ReactNode => {
+    return (
+      <div className="created">
+        <p className="created__text">Successfully created!</p>
+      </div>
+    );
+  };
+
   render(): ReactNode {
     return (
       <div className="create-page__container">
+        {this.state.successMessageShow && this.successfullyCreated()}
         <h1>Create your own fantasy world</h1>
         <img src={ContinentsImage} className="create-page__continent-image" />
         <CreateCountry addCardHandler={this.addCardHandler} isCountryExist={this.isCountryExist} />
