@@ -12,3 +12,9 @@ $image-size: 100px;
   font-size: $image-size;
   line-height: 0.9;
 }
+
+.flag-img {
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+}

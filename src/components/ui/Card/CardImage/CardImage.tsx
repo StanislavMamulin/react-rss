@@ -7,7 +7,15 @@ export class CardImage extends Component<CardImageProps> {
   getCardImage = (flag: string | undefined) => (flag ? flag : '🗺️');
 
   render() {
-    const { flagEmoji } = this.props;
+    const { flagEmoji, flagImage } = this.props;
+
+    if (flagImage) {
+      return (
+        <div className="card-image__wrapper">
+          <img className="flag-img" src={flagImage} />
+        </div>
+      );
+    }
 
     const titleImage = this.getCardImage(flagEmoji);
 
