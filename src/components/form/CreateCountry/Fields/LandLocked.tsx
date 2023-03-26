@@ -1,9 +1,10 @@
 import { createRef, PureComponent, ReactNode, RefObject } from 'react';
 import { Label } from './Label';
+import { Field } from './fields.model';
 
 import '../CreateCountry.scss';
 
-export class LandLocked extends PureComponent {
+export class LandLocked extends PureComponent implements Field<boolean> {
   landlockedInput: RefObject<HTMLInputElement> = createRef();
   notLandlockedInput: RefObject<HTMLInputElement> = createRef();
 
@@ -28,5 +29,9 @@ export class LandLocked extends PureComponent {
     return Boolean(
       this.landlockedInput.current?.checked || this.notLandlockedInput.current?.checked
     );
+  }
+
+  getValue(): boolean {
+    return this.landlockedInput.current!.checked;
   }
 }
