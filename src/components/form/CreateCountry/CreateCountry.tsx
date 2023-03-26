@@ -72,6 +72,7 @@ export class CreateCountry extends PureComponent<CreateCountryProps> {
         },
       });
       form.reset();
+      this.continentComponent.current?.clear();
     }
   };
 

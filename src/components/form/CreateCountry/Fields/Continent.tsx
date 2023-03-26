@@ -81,4 +81,8 @@ export class ContinentChooser
   getValue = (): string[] => {
     return this.choosenContinents;
   };
+
+  clear = (): void => {
+    this.choosenContinents = [];
+  };
 }
