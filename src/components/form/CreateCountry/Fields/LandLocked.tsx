@@ -1,7 +1,7 @@
 import { createRef, PureComponent, ReactNode, RefObject } from 'react';
-
-import './CreateCountry.scss';
 import { Label } from './Label';
+
+import '../CreateCountry.scss';
 
 export class LandLocked extends PureComponent {
   landlockedInput: RefObject<HTMLInputElement> = createRef();

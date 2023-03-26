@@ -1,5 +1,5 @@
 import { Component, ReactNode } from 'react';
-import './CreateCountry.scss';
+import '../CreateCountry.scss';
 
 type LabelProps = {
   children: ReactNode;

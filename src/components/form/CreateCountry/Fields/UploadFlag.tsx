@@ -1,7 +1,7 @@
 import { PureComponent, ReactNode } from 'react';
 import { Label } from './Label';
 
-import './CreateCountry.scss';
+import '../CreateCountry.scss';
 
 export class UploadFlag extends PureComponent {
   render(): ReactNode {

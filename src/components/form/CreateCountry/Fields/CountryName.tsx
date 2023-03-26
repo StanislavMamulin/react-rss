@@ -1,5 +1,5 @@
 import { createRef, PureComponent, ReactNode, RefObject } from 'react';
-import { Label } from '../Label';
+import { Label } from './Label';
 import { Field } from './fields.model';
 
 type CountryNameProps = {
