@@ -34,7 +34,15 @@ export class CreateCountry extends PureComponent<CreateCountryProps> {
 
   handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(event);
+
+    this.fieldsRefs.forEach((fieldRef) => fieldRef.current?.validate());
+
+    const allOk = this.fieldsRefs.every((fieldRef) => fieldRef.current?.validate());
+
+    const form = event.target as HTMLFormElement;
+    if (allOk) {
+      form.reset();
+    }
   };
 
   render(): ReactNode {
