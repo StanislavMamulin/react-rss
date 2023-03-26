@@ -27,7 +27,9 @@ export class CreatePage extends PureComponent<CreatePageProps, CreatePageState> 
       <div className="create-page__container">
         <h1>Create your own fantasy world</h1>
         <CreateCountry addCardHandler={this.addCardHandler} />
-        <CardsList countries={this.state.fantasyCountries} />
+        <div className="cards-wrapper">
+          <CardsList countries={this.state.fantasyCountries} />
+        </div>
       </div>
     );
   }
