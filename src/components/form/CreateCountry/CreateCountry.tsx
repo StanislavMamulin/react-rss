@@ -1,10 +1,13 @@
 import { PureComponent, ReactNode, SyntheticEvent } from 'react';
 import { ContinentChooser } from './Continent';
 
-import { Label } from './Label';
-import { LandLocked } from './LandLocked';
-import { UploadFlag } from './UploadFlag';
-import { SelectWeekStart } from './WeekStart';
+import { LandLocked } from './Fields/LandLocked';
+import { UploadFlag } from './Fields/UploadFlag';
+import { SelectWeekStart } from './Fields/WeekStart';
+
+import { CountryName } from './Fields/CountryName';
+import { Capital } from './Fields/Capital';
+import { NationalDay } from './Fields/NationalDay';
 
 import './CreateCountry.scss';
 
@@ -18,15 +21,9 @@ export class CreateCountry extends PureComponent {
     return (
       <div className="create__container">
         <form className="create__form" onSubmit={this.handleSubmit}>
-          <Label title="Country name:">
-            <input type="text" name="coutry-name" className="create__input" />
-          </Label>
-          <Label title="Capital:">
-            <input type="text" name="capital" className="create__input" />
-          </Label>
-          <Label title="Country day:">
-            <input type="date" name="country-day" className="create__date" />
-          </Label>
+          <CountryName />
+          <Capital />
+          <NationalDay />
           <SelectWeekStart />
           <ContinentChooser />
           <LandLocked />
