@@ -1,15 +1,29 @@
-import { createRef, PureComponent, ReactNode } from 'react';
+import { createRef, PureComponent, ReactNode, RefObject } from 'react';
 import { Label } from './Label';
 import { Field } from './fields.model';
 
 import '../CreateCountry.scss';
 
-export class UploadFlag extends PureComponent implements Field<string> {
+type UploadFlagProps = {
+  ref: RefObject<UploadFlag>;
+};
+
+type UploadFlagState = {
+  errorMessage: string;
+};
+
+export class UploadFlag
+  extends PureComponent<UploadFlagProps, UploadFlagState>
+  implements Field<string>
+{
   uploadInput = createRef<HTMLInputElement>();
+  state = {
+    errorMessage: '',
+  };
 
   render(): ReactNode {
     return (
-      <Label title="Choose a country flag image:" vertical>
+      <Label title="Choose a country flag image:" vertical errorMessage={this.state.errorMessage}>
         <input
           type="file"
           accept="image/png, image/jpeg"
@@ -22,7 +36,26 @@ export class UploadFlag extends PureComponent implements Field<string> {
   }
 
   validate = (): boolean => {
-    return Boolean(this.uploadInput.current?.files);
+    if (!this.uploadInput.current || !this.uploadInput.current.files) {
+      this.setState({
+        errorMessage: 'Please choose flag image',
+      });
+      return false;
+    }
+
+    const isFileChosen = this.uploadInput.current.files.length > 0;
+
+    if (!isFileChosen) {
+      this.setState({
+        errorMessage: 'Please choose flag image',
+      });
+      return false;
+    }
+
+    this.setState({
+      errorMessage: '',
+    });
+    return true;
   };
 
   getValue = (): string => {
