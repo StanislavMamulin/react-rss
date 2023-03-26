@@ -63,6 +63,7 @@ export class CreateCountry extends PureComponent<CreateCountryProps> {
           common: this.countryNameComponent.current?.getValue(),
         },
         capital: [this.capitalComponent.current?.getValue()],
+        nationalDay: this.nationalDayComponent.current?.getValue(),
         startOfWeek: this.weekStartComponent.current?.getValue(),
         continents: this.continentComponent.current?.getValue(),
         landlocked: this.landlockedComponent.current?.getValue(),

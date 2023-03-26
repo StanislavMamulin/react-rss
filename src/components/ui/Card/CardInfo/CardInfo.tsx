@@ -19,6 +19,7 @@ export class CardInfo extends Component<CardInfoProps> {
       maps,
       landlocked,
       startOfWeek,
+      nationalDay,
     } = this.props.countryInfo;
 
     return (
@@ -36,6 +37,7 @@ export class CardInfo extends Component<CardInfoProps> {
         <CommonInfo infoTitle="Map links" info={maps} />
         <CommonInfo infoTitle="Landlocked" info={landlocked} />
         <CommonInfo infoTitle="Start day of the week" info={startOfWeek} />
+        <CommonInfo infoTitle="National day" info={nationalDay} />
       </div>
     );
   }

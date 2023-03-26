@@ -12,7 +12,7 @@ type NationalDayState = {
 
 export class NationalDay
   extends PureComponent<NationalDayProps, NationalDayState>
-  implements Field<Date>
+  implements Field<string>
 {
   nationalDayInput: RefObject<HTMLInputElement> = createRef();
   state = {
@@ -60,7 +60,8 @@ export class NationalDay
     return true;
   }
 
-  getValue(): Date {
-    return new Date();
+  getValue(): string {
+    const dateValue: string = this.nationalDayInput.current!.value;
+    return dateValue;
   }
 }
