@@ -1,7 +1,24 @@
+.create-page__container {
+  margin-top: 88px;
+}
+
 .cards-wrapper {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
   justify-content: center;
   margin-bottom: 12px;
+}
+
+.name-error {
+  margin: 0;
+  color: red;
+  font-weight: bold;
+}
+
+.create-page__continent-image {
+  width: 50%;
+  height: 50%;
+  
+  object-fit: contain;
 }
