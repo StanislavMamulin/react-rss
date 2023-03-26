@@ -46,10 +46,12 @@ export class NationalDay
     }
 
     const date: Date = new Date(dateValue);
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
 
-    if (date > new Date()) {
+    if (date > tomorrow) {
       this.setState({
-        errorMessage: 'Please enter a date in the past',
+        errorMessage: 'Date must be today or in the past',
       });
       return false;
     }
