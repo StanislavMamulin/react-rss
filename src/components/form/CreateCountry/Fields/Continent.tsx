@@ -1,4 +1,4 @@
-import { PureComponent, ReactNode, RefObject, SyntheticEvent } from 'react';
+import { createRef, PureComponent, ReactNode, RefObject, SyntheticEvent } from 'react';
 import { Label } from './Label';
 
 import '../CreateCountry.scss';

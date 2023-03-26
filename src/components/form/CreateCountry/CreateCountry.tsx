@@ -14,6 +14,7 @@ import './CreateCountry.scss';
 
 type CreateCountryProps = {
   addCardHandler: (countries: Country) => void;
+  isCountryExist: (countries: Country) => boolean;
 };
 
 export class CreateCountry extends PureComponent<CreateCountryProps> {
@@ -58,7 +59,7 @@ export class CreateCountry extends PureComponent<CreateCountryProps> {
     const form = event.target as HTMLFormElement;
 
     if (allOk) {
-      this.props.addCardHandler({
+      const newCountry = {
         name: {
           common: this.countryNameComponent.current?.getValue(),
         },
@@ -70,7 +71,13 @@ export class CreateCountry extends PureComponent<CreateCountryProps> {
         flags: {
           png: this.flagUploadComponent.current?.getValue(),
         },
-      });
+      };
+
+      if (this.props.isCountryExist(newCountry)) {
+        return;
+      }
+
+      this.props.addCardHandler(newCountry);
       form.reset();
       this.continentComponent.current?.clear();
     }
