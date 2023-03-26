@@ -23,7 +23,7 @@ export class Cards extends PureComponent<CardsProps, CardsState> {
   }
 }
 
-class CardsList extends PureComponent<CardsListProps> {
+export class CardsList extends PureComponent<CardsListProps> {
   render() {
     const { countries } = this.props;
     const listCountries = countries.map((countryItem: Country) => (
