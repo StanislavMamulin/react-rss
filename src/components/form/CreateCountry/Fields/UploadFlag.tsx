@@ -10,7 +10,7 @@ export class UploadFlag extends PureComponent {
         <input
           type="file"
           accept="image/png, image/jpeg"
-          name="flag-upload"
+          name="flag-file"
           className="flag-upload__input"
         ></input>
       </Label>
