@@ -65,10 +65,10 @@ export class CreatePage extends PureComponent<CreatePageProps, CreatePageState> 
         <h1>Create your own fantasy world</h1>
         <img src={ContinentsImage} className="create-page__continent-image" />
         <CreateCountry addCardHandler={this.addCardHandler} isCountryExist={this.isCountryExist} />
+        {this.state.errorMessage ? <p className="name-error">{this.state.errorMessage}</p> : null}
         <div className="cards-wrapper">
           <CardsList countries={this.state.fantasyCountries} />
         </div>
-        {this.state.errorMessage ? <p className="name-error">{this.state.errorMessage}</p> : null}
       </div>
     );
   }
