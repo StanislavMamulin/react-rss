@@ -52,6 +52,15 @@ export class UploadFlag
       return false;
     }
 
+    const file = this.uploadInput.current.files[0];
+
+    if (!file.type.match('image/*')) {
+      this.setState({
+        errorMessage: 'Incorrect format. Should be an image.',
+      });
+      return false;
+    }
+
     this.setState({
       errorMessage: '',
     });
