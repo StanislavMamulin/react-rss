@@ -1,4 +1,4 @@
-import { PureComponent, ReactNode, RefObject, SyntheticEvent } from 'react';
+import { createRef, PureComponent, ReactNode, RefObject, SyntheticEvent } from 'react';
 import { Label } from './Label';
 
 import '../CreateCountry.scss';
@@ -22,6 +22,7 @@ export class ContinentChooser
     errorMessage: '',
   };
   choosenContinents: string[] = [];
+  checkboxesInputs: RefObject<HTMLInputElement>[] = [];
 
   checkHandler = (event: SyntheticEvent) => {
     if (!event.nativeEvent.target) return;
@@ -44,17 +45,24 @@ export class ContinentChooser
     return (
       <div className="create__continents-container">
         <p>Located on the continents:</p>
-        {continents.map((continent: string) => (
-          <Label title={continent} key={continent}>
-            <input
-              type="checkbox"
-              name={`continent-${continent}`}
-              className="create__checkbox"
-              value={continent}
-              onChange={this.checkHandler}
-            />
-          </Label>
-        ))}
+        {continents.map((continent: string) => {
+          const checkboxInput = createRef<HTMLInputElement>();
+          this.checkboxesInputs.push(checkboxInput);
+
+          return (
+            <Label title={continent} key={continent}>
+              <input
+                type="checkbox"
+                name={`continent-${continent}`}
+                className="create__checkbox"
+                value={continent}
+                onChange={this.checkHandler}
+                defaultChecked={false}
+                ref={checkboxInput}
+              />
+            </Label>
+          );
+        })}
         {this.state.errorMessage ? (
           <p className="create__label-error">{this.state.errorMessage}</p>
         ) : null}
@@ -84,5 +92,10 @@ export class ContinentChooser
 
   clear = (): void => {
     this.choosenContinents = [];
+    this.checkboxesInputs.forEach((cbRef) => {
+      if (cbRef.current) {
+        cbRef.current.checked = false;
+      }
+    });
   };
 }
