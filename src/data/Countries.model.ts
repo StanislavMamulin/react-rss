@@ -93,6 +93,7 @@ type CountryJSON = {
     format: string;
     regex: string;
   };
+  nationalDay: Date;
 };
 
 export type Country = Subset<CountryJSON>;

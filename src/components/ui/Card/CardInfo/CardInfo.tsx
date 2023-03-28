@@ -17,6 +17,9 @@ export class CardInfo extends Component<CardInfoProps> {
       languages,
       currencies,
       maps,
+      landlocked,
+      startOfWeek,
+      nationalDay,
     } = this.props.countryInfo;
 
     return (
@@ -32,6 +35,9 @@ export class CardInfo extends Component<CardInfoProps> {
         <CommonInfo infoTitle="Languages" info={languages} />
         <CommonInfo infoTitle="Currencies" info={currencies} />
         <CommonInfo infoTitle="Map links" info={maps} />
+        <CommonInfo infoTitle="Landlocked" info={landlocked} />
+        <CommonInfo infoTitle="Start day of the week" info={startOfWeek} />
+        <CommonInfo infoTitle="National day" info={nationalDay} />
       </div>
     );
   }
@@ -41,7 +47,7 @@ class CommonInfo extends Component<CommonInfoProps> {
   render() {
     const { infoTitle, info } = this.props;
 
-    if (!info) {
+    if (typeof info === 'undefined') {
       return null;
     }
 
@@ -50,6 +56,8 @@ class CommonInfo extends Component<CommonInfoProps> {
       infoValue = Array.isArray(info) ? info.join(', ') : String(info);
     } else if (typeof info === 'object') {
       infoValue = getAllInfoObjectValues(info as InfoProp);
+    } else if (typeof info === 'boolean') {
+      infoValue = info ? 'Yes' : 'No';
     } else {
       infoValue = info;
     }

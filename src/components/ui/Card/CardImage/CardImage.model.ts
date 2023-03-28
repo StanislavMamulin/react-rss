@@ -1,3 +1,4 @@
 export type CardImageProps = {
-  flagEmoji: string | undefined;
+  flagEmoji?: string;
+  flagImage?: string;
 };

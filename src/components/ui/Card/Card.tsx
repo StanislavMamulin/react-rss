@@ -7,11 +7,11 @@ import { CardInfo } from './CardInfo/CardInfo';
 
 export class Card extends Component<CardProps> {
   render() {
-    const { flag, ...countryInfo }: Country = this.props.country;
+    const { flag, flags, ...countryInfo }: Country = this.props.country;
 
     return (
       <div className="card-wrapper">
-        <CardImage flagEmoji={flag} />
+        <CardImage flagEmoji={flag} flagImage={flags?.png} />
         <CardInfo countryInfo={countryInfo} />
       </div>
     );
