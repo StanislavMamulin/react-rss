@@ -13,6 +13,7 @@ export default defineConfig({
     setupFiles: './src/test/setup.ts',
     coverage: {
       provider: 'istanbul',
+      all: true,
     },
   },
 });
