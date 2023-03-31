@@ -1,62 +1,39 @@
-import { createRef, PureComponent, ReactNode, RefObject } from 'react';
+import { useEffect, useState } from 'react';
+import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form';
+
 import { Label } from './Label';
-import { Field } from './fields.model';
+import { capitalValidation, fieldIsRequired, minLengthValidation } from './validationRules';
 
 type CapitalProps = {
-  ref: RefObject<Capital>;
+  register: UseFormRegister<FieldValues>;
+  errors: FieldErrors<FieldValues>;
 };
 
-type CapitalState = {
-  errorMessage: string;
+const FIELD_NAME = 'capital';
+
+export const Capital = ({ register, errors }: CapitalProps) => {
+  const [errorMessage, setErrorMessage] = useState<string>('');
+
+  const isError = errors[FIELD_NAME]?.message;
+  useEffect(() => {
+    if (!isError) {
+      setErrorMessage('');
+    } else {
+      setErrorMessage(isError as string);
+    }
+  }, [isError]);
+
+  return (
+    <Label title="Capital:" errorMessage={errorMessage}>
+      <input
+        type="text"
+        className="create__input"
+        {...register(FIELD_NAME, {
+          required: fieldIsRequired,
+          minLength: minLengthValidation(2),
+          pattern: capitalValidation,
+        })}
+      />
+    </Label>
+  );
 };
-
-export class Capital extends PureComponent<CapitalProps, CapitalState> implements Field<string> {
-  capitalInput: RefObject<HTMLInputElement> = createRef();
-  state = {
-    errorMessage: '',
-  };
-
-  render(): ReactNode {
-    return (
-      <Label title="Capital:" errorMessage={this.state.errorMessage}>
-        <input type="text" name="capital" className="create__input" ref={this.capitalInput} />
-      </Label>
-    );
-  }
-
-  validate(): boolean {
-    if (!this.capitalInput.current) {
-      return false;
-    }
-
-    const name: string = this.capitalInput.current.value;
-    const regExp = new RegExp('^[A-Z][А-Я]*');
-
-    if (name.length < 2) {
-      this.setState({
-        errorMessage: 'Minimum length 2 characters',
-      });
-      return false;
-    }
-
-    if (!regExp.test(name)) {
-      this.setState({
-        errorMessage: 'The first letter must be capital and alphabetic',
-      });
-      return false;
-    }
-
-    this.setState({
-      errorMessage: '',
-    });
-    return true;
-  }
-
-  getValue(): string {
-    if (!this.capitalInput.current) {
-      return '';
-    }
-
-    return this.capitalInput.current.value;
-  }
-}
