@@ -1,69 +1,33 @@
-import { createRef, PureComponent, ReactNode, RefObject } from 'react';
+import { useEffect, useState } from 'react';
 import { Label } from './Label';
-import { Field } from './fields.model';
+import { ReactHookFormFieldProps } from './fields.model';
+import { fieldIsRequired, notFuture } from './validationRules';
 
-type NationalDayProps = {
-  ref: RefObject<NationalDay>;
+const FIELD_NAME = 'nationalDay';
+
+export const NationalDay = ({ register, errors }: ReactHookFormFieldProps): JSX.Element => {
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const isError = errors[FIELD_NAME]?.message;
+  useEffect(() => {
+    if (!isError) {
+      setErrorMessage('');
+    } else {
+      setErrorMessage(isError as string);
+    }
+  }, [isError]);
+
+  return (
+    <Label title="National day:" errorMessage={errorMessage}>
+      <input
+        type="date"
+        className="create__date"
+        {...register(FIELD_NAME, {
+          required: fieldIsRequired,
+          valueAsDate: true,
+          validate: notFuture,
+        })}
+      />
+    </Label>
+  );
 };
-
-type NationalDayState = {
-  errorMessage: string;
-};
-
-export class NationalDay
-  extends PureComponent<NationalDayProps, NationalDayState>
-  implements Field<string>
-{
-  nationalDayInput: RefObject<HTMLInputElement> = createRef();
-  state = {
-    errorMessage: '',
-  };
-
-  render(): ReactNode {
-    return (
-      <Label title="National day:" errorMessage={this.state.errorMessage}>
-        <input
-          type="date"
-          name="national-day"
-          className="create__date"
-          ref={this.nationalDayInput}
-        />
-      </Label>
-    );
-  }
-
-  validate(): boolean {
-    if (!this.nationalDayInput.current) {
-      return false;
-    }
-
-    const dateValue: string = this.nationalDayInput.current.value;
-    if (dateValue === '') {
-      this.setState({
-        errorMessage: 'Please enter date',
-      });
-      return false;
-    }
-
-    const date: Date = new Date(dateValue);
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-
-    if (date > tomorrow) {
-      this.setState({
-        errorMessage: 'Date must be today or in the past',
-      });
-      return false;
-    }
-
-    this.setState({
-      errorMessage: '',
-    });
-    return true;
-  }
-
-  getValue(): string {
-    const dateValue: string = this.nationalDayInput.current!.value;
-    return dateValue;
-  }
-}
