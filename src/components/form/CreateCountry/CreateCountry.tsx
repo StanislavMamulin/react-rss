@@ -1,4 +1,4 @@
-import { FormEvent, RefObject, createRef, useEffect } from 'react';
+import { FormEvent, RefObject, createRef, useEffect, useRef, useState } from 'react';
 import { ContinentChooser } from './Fields/Continent';
 
 import { LandLocked } from './Fields/LandLocked';
@@ -21,32 +21,36 @@ export const CreateCountry = ({
   addCardHandler,
   isCountryExist,
 }: CreateCountryProps): JSX.Element => {
-  const fieldsRefs: RefObject<
-    | CountryName
-    | LandLocked
-    | Capital
-    | NationalDay
-    | ContinentChooser
-    | SelectWeekStart
-    | UploadFlag
-  >[] = [];
+  const [fieldsRefs, setFieldsRefs] = useState<
+    RefObject<
+      | CountryName
+      | LandLocked
+      | Capital
+      | NationalDay
+      | ContinentChooser
+      | SelectWeekStart
+      | UploadFlag
+    >[]
+  >([]);
 
-  const countryNameComponent: RefObject<CountryName> = createRef();
-  const capitalComponent: RefObject<Capital> = createRef();
-  const nationalDayComponent: RefObject<NationalDay> = createRef();
-  const landlockedComponent: RefObject<LandLocked> = createRef();
-  const continentComponent: RefObject<ContinentChooser> = createRef();
-  const weekStartComponent: RefObject<SelectWeekStart> = createRef();
-  const flagUploadComponent: RefObject<UploadFlag> = createRef();
+  const countryNameComponent: RefObject<CountryName> = useRef(null);
+  const capitalComponent: RefObject<Capital> = useRef(null);
+  const nationalDayComponent: RefObject<NationalDay> = useRef(null);
+  const landlockedComponent: RefObject<LandLocked> = useRef(null);
+  const continentComponent: RefObject<ContinentChooser> = useRef(null);
+  const weekStartComponent: RefObject<SelectWeekStart> = useRef(null);
+  const flagUploadComponent: RefObject<UploadFlag> = useRef(null);
 
   useEffect(() => {
-    fieldsRefs.push(countryNameComponent);
-    fieldsRefs.push(capitalComponent);
-    fieldsRefs.push(landlockedComponent);
-    fieldsRefs.push(nationalDayComponent);
-    fieldsRefs.push(continentComponent);
-    fieldsRefs.push(weekStartComponent);
-    fieldsRefs.push(flagUploadComponent);
+    setFieldsRefs([
+      countryNameComponent,
+      capitalComponent,
+      landlockedComponent,
+      nationalDayComponent,
+      continentComponent,
+      weekStartComponent,
+      flagUploadComponent,
+    ]);
   }, []);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
