@@ -1,70 +1,38 @@
-import { createRef, PureComponent, ReactNode, RefObject } from 'react';
+import { useEffect, useState } from 'react';
+import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form';
 import { Label } from './Label';
-import { Field } from './fields.model';
+import { capitalValidation, fieldIsRequired, minLengthValidation } from './validationRules';
 
 type CountryNameProps = {
-  ref: RefObject<CountryName>;
+  register: UseFormRegister<FieldValues>;
+  errors: FieldErrors<FieldValues>;
 };
 
-type CountryNameState = {
-  errorMessage: string;
+const FIELD_NAME = 'coutry-name';
+
+export const CountryName = ({ register, errors }: CountryNameProps) => {
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const isError = errors[FIELD_NAME]?.message;
+  useEffect(() => {
+    if (!isError) {
+      setErrorMessage('');
+    } else {
+      setErrorMessage(isError as string);
+    }
+  }, [isError]);
+
+  return (
+    <Label title="Country name:" errorMessage={errorMessage}>
+      <input
+        type="text"
+        {...register(FIELD_NAME, {
+          required: fieldIsRequired,
+          minLength: minLengthValidation(2),
+          pattern: capitalValidation,
+        })}
+        className="create__input"
+      />
+    </Label>
+  );
 };
-
-export class CountryName
-  extends PureComponent<CountryNameProps, CountryNameState>
-  implements Field<string>
-{
-  countryNameInput: RefObject<HTMLInputElement> = createRef();
-  state = {
-    errorMessage: '',
-  };
-
-  render(): ReactNode {
-    return (
-      <Label title="Country name:" errorMessage={this.state.errorMessage}>
-        <input
-          type="text"
-          name="coutry-name"
-          className="create__input"
-          ref={this.countryNameInput}
-        />
-      </Label>
-    );
-  }
-
-  validate(): boolean {
-    if (!this.countryNameInput.current) {
-      return false;
-    }
-
-    const name: string = this.countryNameInput.current.value;
-    const regExp = new RegExp('^[A-Z][А-Я]*');
-
-    if (name.length < 2) {
-      this.setState({
-        errorMessage: 'Minimum length 2 characters',
-      });
-      return false;
-    }
-
-    if (!regExp.test(name)) {
-      this.setState({
-        errorMessage: 'The first letter must be capital and alphabetic',
-      });
-      return false;
-    }
-
-    this.setState({
-      errorMessage: '',
-    });
-    return true;
-  }
-
-  getValue(): string {
-    if (!this.countryNameInput.current) {
-      return '';
-    }
-
-    return this.countryNameInput.current.value;
-  }
-}
