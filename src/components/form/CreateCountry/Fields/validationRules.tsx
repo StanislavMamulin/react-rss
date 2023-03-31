@@ -11,3 +11,10 @@ export const minLengthValidation = (length: number) => ({
 });
 
 export const fieldIsRequired = 'Field is required';
+
+export const notFuture = (date: Date) => {
+  const choosenDate = date.getTime();
+  const now = new Date().getTime();
+
+  return choosenDate > now ? 'Date must be today or in the past' : false;
+};
