@@ -1,16 +1,11 @@
 import { useEffect, useState } from 'react';
-import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form';
 import { Label } from './Label';
 import { capitalValidation, fieldIsRequired, minLengthValidation } from './validationRules';
+import { ReactHookFormFieldProps } from './fields.model';
 
-type CountryNameProps = {
-  register: UseFormRegister<FieldValues>;
-  errors: FieldErrors<FieldValues>;
-};
+const FIELD_NAME = 'coutryName';
 
-const FIELD_NAME = 'coutry-name';
-
-export const CountryName = ({ register, errors }: CountryNameProps) => {
+export const CountryName = ({ register, errors }: ReactHookFormFieldProps) => {
   const [errorMessage, setErrorMessage] = useState('');
 
   const isError = errors[FIELD_NAME]?.message;
