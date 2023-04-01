@@ -1,17 +1,12 @@
 import { useEffect, useState } from 'react';
-import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form';
 
 import { Label } from './Label';
 import { capitalValidation, fieldIsRequired, minLengthValidation } from './validationRules';
-
-type CapitalProps = {
-  register: UseFormRegister<FieldValues>;
-  errors: FieldErrors<FieldValues>;
-};
+import { ReactHookFormFieldProps } from './fields.model';
 
 const FIELD_NAME = 'capital';
 
-export const Capital = ({ register, errors }: CapitalProps) => {
+export const Capital = ({ register, errors }: ReactHookFormFieldProps) => {
   const [errorMessage, setErrorMessage] = useState<string>('');
 
   const isError = errors[FIELD_NAME]?.message;
