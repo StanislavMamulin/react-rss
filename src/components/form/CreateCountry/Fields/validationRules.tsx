@@ -20,4 +20,7 @@ export const notFuture = (date: Date) => {
 };
 
 export const leastOneAnswerInArray = (array: string[]) =>
-  array.length === 0 ? 'At least one must be selected' : true;
+  array.length !== 0 || 'At least one must be selected';
+
+export const somethingChoosen = (isChoosen: boolean | undefined) =>
+  isChoosen || 'At least one option must be selected';
