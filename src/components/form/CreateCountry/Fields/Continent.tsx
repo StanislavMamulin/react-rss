@@ -1,4 +1,4 @@
-import { SyntheticEvent, useRef } from 'react';
+import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { Label } from './Label';
 import { ReactHookFormFieldProps } from './fields.model';
 
@@ -39,13 +39,11 @@ export const ContinentChooser = ({ register, errors }: ReactHookFormFieldProps):
           <input
             type="checkbox"
             {...register(FIELD_NAME, {
-              validate: () => {
-                return leastOneAnswerInArray(choosenContinents.current);
-              },
+              validate: () => leastOneAnswerInArray(choosenContinents.current),
+              onChange: checkHandler,
             })}
             value={continent}
             className="create__checkbox"
-            onChange={checkHandler}
             defaultChecked={false}
           />
         </Label>
