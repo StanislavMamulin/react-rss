@@ -18,3 +18,6 @@ export const notFuture = (date: Date) => {
 
   return choosenDate > now ? 'Date must be today or in the past' : true;
 };
+
+export const leastOneAnswerInArray = (array: string[]) =>
+  array.length === 0 ? 'At least one must be selected' : true;

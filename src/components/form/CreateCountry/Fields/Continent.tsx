@@ -1,101 +1,56 @@
-import { createRef, PureComponent, ReactNode, RefObject, SyntheticEvent } from 'react';
+import { SyntheticEvent, useRef } from 'react';
 import { Label } from './Label';
+import { ReactHookFormFieldProps } from './fields.model';
 
 import '../CreateCountry.scss';
-import { Field } from './fields.model';
+import { leastOneAnswerInArray } from './validationRules';
 
 const continents = ['Kagaria', 'Hazos', 'Abora', 'Khuntan'];
+const FIELD_NAME = 'continents';
 
-type ContinentProps = {
-  ref: RefObject<ContinentChooser>;
-};
+export const ContinentChooser = ({ register, errors }: ReactHookFormFieldProps): JSX.Element => {
+  const choosenContinents = useRef<string[]>([]);
 
-type ContinentState = {
-  errorMessage: string;
-};
+  const isError = errors[FIELD_NAME];
 
-export class ContinentChooser
-  extends PureComponent<ContinentProps, ContinentState>
-  implements Field<string[]>
-{
-  state = {
-    errorMessage: '',
-  };
-  choosenContinents: string[] = [];
-  checkboxesInputs: RefObject<HTMLInputElement>[] = [];
+  const checkHandler = (event: SyntheticEvent) => {
+    if (!event.nativeEvent.target || !(event.nativeEvent.target instanceof HTMLInputElement))
+      return;
 
-  checkHandler = (event: SyntheticEvent) => {
-    if (!event.nativeEvent.target) return;
+    const checkedValue: string = event.nativeEvent.target.value;
 
-    const checkedValue = (event.nativeEvent.target as HTMLInputElement).value;
-
-    const existContinentIndex: number = this.choosenContinents.findIndex(
+    const existContinentIndex: number = choosenContinents.current.findIndex(
       (continent: string) => continent === checkedValue
     );
 
     if (existContinentIndex === -1) {
-      this.choosenContinents.push(checkedValue);
-      this.choosenContinents.sort();
+      choosenContinents.current.push(checkedValue);
+      choosenContinents.current.sort();
     } else {
-      this.choosenContinents.splice(existContinentIndex, 1);
+      choosenContinents.current.splice(existContinentIndex, 1);
     }
   };
 
-  render(): ReactNode {
-    return (
-      <div className="create__continents-container">
-        <p>Located on the continents:</p>
-        {continents.map((continent: string) => {
-          const checkboxInput = createRef<HTMLInputElement>();
-          this.checkboxesInputs.push(checkboxInput);
-
-          return (
-            <Label title={continent} key={continent}>
-              <input
-                type="checkbox"
-                name={`continent-${continent}`}
-                className="create__checkbox"
-                value={continent}
-                onChange={this.checkHandler}
-                defaultChecked={false}
-                ref={checkboxInput}
-              />
-            </Label>
-          );
-        })}
-        {this.state.errorMessage ? (
-          <p className="create__label-error">{this.state.errorMessage}</p>
-        ) : null}
-      </div>
-    );
-  }
-
-  validate = (): boolean => {
-    if (this.choosenContinents.length === 0) {
-      this.setState({
-        errorMessage: 'Please select at least one continent',
-      });
-
-      return false;
-    }
-
-    this.setState({
-      errorMessage: '',
-    });
-
-    return true;
-  };
-
-  getValue = (): string[] => {
-    return this.choosenContinents;
-  };
-
-  clear = (): void => {
-    this.choosenContinents = [];
-    this.checkboxesInputs.forEach((cbRef) => {
-      if (cbRef.current) {
-        cbRef.current.checked = false;
-      }
-    });
-  };
-}
+  return (
+    <div className="create__continents-container">
+      <p>Located on the continents:</p>
+      {continents.map((continent: string) => (
+        <Label title={continent} key={continent}>
+          <input
+            type="checkbox"
+            {...register(FIELD_NAME, {
+              validate: () => {
+                return leastOneAnswerInArray(choosenContinents.current);
+              },
+            })}
+            value={continent}
+            className="create__checkbox"
+            onChange={checkHandler}
+            defaultChecked={false}
+          />
+        </Label>
+      ))}
+      {isError && <p className="create__label-error">{isError.message?.toString()}</p>}
+    </div>
+  );
+};
