@@ -26,4 +26,4 @@ export const somethingChoosen = (isChoosen: boolean | undefined) =>
   isChoosen || 'At least one option must be selected';
 
 export const isImageFile = (file: FileList) =>
-  file[0].type.match('image/*') || 'Incorrect format: must be PNG or JPG';
+  file[0].type.includes('image') || 'Incorrect format: must image';
