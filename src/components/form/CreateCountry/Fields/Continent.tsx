@@ -1,5 +1,5 @@
-import { SyntheticEvent, useEffect, useRef, useState } from 'react';
-import { Label } from './Label';
+import { SyntheticEvent, useRef } from 'react';
+import { Label, LabelError } from './Label';
 import { ReactHookFormFieldProps } from './fields.model';
 
 import '../CreateCountry.scss';
@@ -48,7 +48,7 @@ export const ContinentChooser = ({ register, errors }: ReactHookFormFieldProps):
           />
         </Label>
       ))}
-      {isError && <p className="create__label-error">{isError.message?.toString()}</p>}
+      {isError && <LabelError message={isError.message?.toString()} />}
     </div>
   );
 };
