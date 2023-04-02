@@ -43,13 +43,8 @@ export const SearchBar = (): JSX.Element => {
         value={searchValue}
       ></input>
       {searchValue.length > 0 && (
-        <div className="search-bar__clear-wrapper" onMouseDown={clearHandler}>
-          <img
-            src={ClearLogo}
-            alt="Clear search"
-            className="search-bar__clear-icon"
-            onMouseDown={clearHandler}
-          />
+        <div role="button" className="search-bar__clear-wrapper" onMouseDown={clearHandler}>
+          <img src={ClearLogo} alt="Clear search" className="search-bar__clear-icon" />
         </div>
       )}
     </div>
