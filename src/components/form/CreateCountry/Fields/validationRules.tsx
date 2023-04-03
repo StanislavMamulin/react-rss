@@ -28,3 +28,6 @@ export const somethingChoosen = (isChoosen: boolean | undefined) =>
 
 export const isImageFile = (file: FileList) =>
   file[0].type.includes('image') || 'Incorrect format: must image';
+
+export const selectedNotDefaultSelect = (select: string, defaultSelect: string) =>
+  select !== defaultSelect || 'Please select one of options';
