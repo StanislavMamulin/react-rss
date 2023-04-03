@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { ContinentChooser } from './Fields/Continent';
@@ -31,11 +31,19 @@ export const CreateCountry = ({
     formState: { errors, isSubmitSuccessful },
   } = useForm<FormValues>();
 
+  const [clearFields, setClearFields] = useState(false);
+
   useEffect(() => {
     if (isSubmitSuccessful) {
       reset();
     }
   }, [isSubmitSuccessful, reset]);
+
+  useEffect(() => {
+    if (clearFields) {
+      setClearFields(false);
+    }
+  }, [clearFields]);
 
   const onSubmitHandle: SubmitHandler<FormValues> = (data) => {
     const { coutryName, capital, nationalDay, startOfWeek, continents, landlocked, flagFile } =
@@ -60,6 +68,7 @@ export const CreateCountry = ({
     }
 
     addCardHandler(newCountry);
+    setClearFields(true);
   };
 
   return (
@@ -69,8 +78,8 @@ export const CreateCountry = ({
         <Capital register={register} errors={errors} />
         <NationalDay register={register} errors={errors} />
         <SelectWeekStart register={register} errors={errors} />
-        <ContinentChooser register={register} errors={errors} />
-        <LandLocked register={register} errors={errors} />
+        <ContinentChooser register={register} errors={errors} clear={clearFields} />
+        <LandLocked register={register} errors={errors} clear={clearFields} />
         <UploadFlag register={register} errors={errors} />
 
         <input type="submit" value="Create" className="create__submit" />

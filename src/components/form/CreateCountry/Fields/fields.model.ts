@@ -3,6 +3,7 @@ import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form';
 export type ReactHookFormFieldProps = {
   register: UseFormRegister<FormValues>;
   errors: FieldErrors<FieldValues>;
+  clear?: boolean;
 };
 
 export interface Field<T> {

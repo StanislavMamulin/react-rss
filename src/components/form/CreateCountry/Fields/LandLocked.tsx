@@ -7,13 +7,17 @@ import { somethingChoosen } from './validationRules';
 
 const FIELD_NAME = 'landlocked';
 
-export const LandLocked = ({ register, errors }: ReactHookFormFieldProps) => {
+export const LandLocked = ({ register, errors, clear }: ReactHookFormFieldProps) => {
   const isChoosen = useRef<boolean>();
   const isError = errors[FIELD_NAME];
 
   const onChange = () => {
     isChoosen.current = true;
   };
+
+  if (clear) {
+    isChoosen.current = undefined;
+  }
 
   return (
     <div className="create__landlocked-container">

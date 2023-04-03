@@ -8,10 +8,18 @@ import { leastOneAnswerInArray } from './validationRules';
 const continents = ['Kagaria', 'Hazos', 'Abora', 'Khuntan'];
 const FIELD_NAME = 'continents';
 
-export const ContinentChooser = ({ register, errors }: ReactHookFormFieldProps): JSX.Element => {
+export const ContinentChooser = ({
+  register,
+  errors,
+  clear,
+}: ReactHookFormFieldProps): JSX.Element => {
   const choosenContinents = useRef<string[]>([]);
 
   const isError = errors[FIELD_NAME];
+
+  if (clear) {
+    choosenContinents.current = [];
+  }
 
   const checkHandler = (event: SyntheticEvent) => {
     if (!event.nativeEvent.target || !(event.nativeEvent.target instanceof HTMLInputElement))
