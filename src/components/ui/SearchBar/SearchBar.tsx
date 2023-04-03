@@ -1,4 +1,4 @@
-import { BaseSyntheticEvent, useState } from 'react';
+import { BaseSyntheticEvent, useEffect, useRef, useState } from 'react';
 import { SEARCH_STORE_KEY } from './constants';
 
 import SearchLogo from '../../../assets/icons/search.svg';
@@ -9,19 +9,33 @@ import './SearchBar.scss';
 const INITIAL_SEARCH_VALUE = '';
 
 export const SearchBar = (): JSX.Element => {
-  const [searchValue, setSearchValue] = useState<string>(() => {
-    const savedSearch: string | null = localStorage.getItem(SEARCH_STORE_KEY);
-    return savedSearch || INITIAL_SEARCH_VALUE;
-  });
+  const [searchValue, setSearchValue] = useState<string>(INITIAL_SEARCH_VALUE);
+  const searchText = useRef(searchValue);
+
+  useEffect(() => {
+    const savedSearch: string = localStorage.getItem(SEARCH_STORE_KEY) || INITIAL_SEARCH_VALUE;
+    setSearchValue(savedSearch);
+    searchText.current = savedSearch;
+
+    return () => {
+      localStorage.setItem(SEARCH_STORE_KEY, searchText.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (searchValue !== INITIAL_SEARCH_VALUE) {
+      searchText.current = searchValue || INITIAL_SEARCH_VALUE;
+    }
+  }, [searchValue]);
 
   const inputHandler = (event: BaseSyntheticEvent): void => {
-    const searchText: string = event.target.value;
+    const searchTextValue: string = event.target.value;
 
-    setSearchValue(searchText);
-    localStorage.setItem(SEARCH_STORE_KEY, searchText);
+    setSearchValue(searchTextValue);
 
-    if (searchText.length === 0) {
+    if (searchTextValue.length === 0) {
       localStorage.removeItem(SEARCH_STORE_KEY);
+      searchText.current = INITIAL_SEARCH_VALUE;
     }
   };
 
@@ -30,6 +44,7 @@ export const SearchBar = (): JSX.Element => {
 
     setSearchValue(INITIAL_SEARCH_VALUE);
     localStorage.removeItem(SEARCH_STORE_KEY);
+    searchText.current = INITIAL_SEARCH_VALUE;
   };
 
   return (
