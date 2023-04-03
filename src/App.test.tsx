@@ -13,6 +13,13 @@ describe('App rendering', () => {
     expect(navigationLinks).toHaveLength(3);
   });
 
+  it('should render main page', async () => {
+    render(<App />, { wrapper: BrowserRouter });
+
+    const countries = await screen.findAllByText(/country name/i);
+    expect(countries).toHaveLength(250);
+  });
+
   it('should work navigation', () => {
     render(<App />, { wrapper: BrowserRouter });
 
