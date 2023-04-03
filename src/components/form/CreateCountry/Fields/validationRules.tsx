@@ -1,8 +1,9 @@
-const capitalFirstLetter = new RegExp('^[A-Z][А-Я]*');
+const nameCharacters = new RegExp(/^\p{Lu}[\p{L}\p{Z}\p{Pd}]+[^\p{Z}\p{Pd}]$/gu);
 
 export const capitalValidation = {
-  value: capitalFirstLetter,
-  message: 'The first letter must be capital and alphabetic',
+  value: nameCharacters,
+  message:
+    'Must start with a capital letter. Only any letters of any language, hyphen or dash, space or invisible separator are supported.',
 };
 
 export const minLengthValidation = (length: number) => ({
