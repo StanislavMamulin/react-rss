@@ -9,7 +9,7 @@ describe('Create country', () => {
 
     fireEvent.submit(screen.getByRole('button', { name: 'Create' }));
 
-    await waitFor(() => expect(screen.queryAllByRole('alert')).toHaveLength(6));
+    await waitFor(() => expect(screen.queryAllByRole('alert')).toHaveLength(7));
   });
 
   it('should display min length error when country name is too short (<2 character)', async () => {
@@ -46,6 +46,8 @@ describe('Create country', () => {
     });
 
     fireEvent.change(screen.getByLabelText(/national day/i), { target: { value: '1888-05-24' } });
+
+    fireEvent.change(screen.getByLabelText(/Start of week/i), { target: { value: 'Monday' } });
 
     fireEvent.click(screen.getByRole('checkbox', { name: /^hazos/i }));
 
