@@ -1,7 +1,6 @@
 import { Card } from '../Card/Card';
 import { Country } from 'data/Countries.model';
-import { useEffect, useState } from 'react';
-import { CardsListProps, getCountries } from './Cards.model';
+import { CardsListProps, CardsProps } from './Cards.model';
 import './Cards.scss';
 
 export const CardsList = ({ countries }: CardsListProps): JSX.Element => {
@@ -12,14 +11,7 @@ export const CardsList = ({ countries }: CardsListProps): JSX.Element => {
   return <>{listCountries}</>;
 };
 
-export const Cards = () => {
-  const [countries, setCountries] = useState<Country[]>([]);
-
-  useEffect(() => {
-    const countries: Country[] = getCountries();
-    setCountries(countries);
-  }, []);
-
+export const Cards = ({ countries }: CardsProps) => {
   return (
     <div className="cards-wrapper">
       <CardsList countries={countries} />
