@@ -1,0 +1,23 @@
+@use '../../../styles/common';
+
+.spinner_container {
+  @include common.center-absolute-element;
+
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.spinner {
+  width: 100px;
+  animation: spin 2s linear infinite;
+
+  @include common.center-absolute-element;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
