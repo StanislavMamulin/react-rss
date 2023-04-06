@@ -10,7 +10,11 @@
   width: 100px;
   animation: spin 2s linear infinite;
 
-  @include common.center-absolute-element;
+  position: sticky;
+  left: 0;
+  right: 0;
+  top: 200px;
+  margin: 0 auto;
 }
 
 @keyframes spin {
