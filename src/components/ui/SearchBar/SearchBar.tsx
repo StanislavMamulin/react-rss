@@ -50,9 +50,7 @@ export const SearchBar = ({ searchSubmit }: SearchProps): JSX.Element => {
 
   const onSubmit = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.code === 'Enter') {
-      if (searchValue !== '') {
-        searchSubmit(searchValue);
-      }
+      searchSubmit(searchValue);
     }
   };
 

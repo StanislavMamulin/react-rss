@@ -26,3 +26,22 @@ export const getAllCountries = async (controller: AbortController): Promise<Coun
     throw err;
   }
 };
+
+export const searchCountriesByName = async (
+  countryName: string,
+  controller: AbortController
+): Promise<Country[]> => {
+  const searchByNameURL = `${BASE_URL}/name/${countryName}`;
+  try {
+    const response = await fetch(searchByNameURL, { signal: controller.signal });
+    if (!response.ok) {
+      return [];
+    }
+
+    const allCountries: Country[] = await response.json();
+
+    return allCountries;
+  } catch (err) {
+    throw err;
+  }
+};
