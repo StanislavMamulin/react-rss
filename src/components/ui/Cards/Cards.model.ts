@@ -1,12 +1,28 @@
 import { Country } from 'data/Countries.model';
-import countries from '../../../data/Countries.json';
 
 export type CardsProps = {
   countries: Country[];
+  isLoading: boolean;
 };
 
 export type CardsListProps = {
   countries: Country[];
 };
 
-export const getCountries = () => countries;
+const BASE_URL = 'https://restcountries.com/v3.1';
+const ALL_COUNTRIES_URL = `${BASE_URL}/all`;
+
+export const getAllCountries = async (controller: AbortController): Promise<Country[]> => {
+  try {
+    const response = await fetch(ALL_COUNTRIES_URL, { signal: controller.signal });
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+
+    const allCountries: Country[] = await response.json();
+
+    return allCountries;
+  } catch (err) {
+    throw err;
+  }
+};
