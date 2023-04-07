@@ -42,7 +42,6 @@ export const MainPage = (): JSX.Element => {
     requestCountries(controller, searchValue);
 
     return () => {
-      console.log('abort search');
       setIsLoading(false);
       controller.abort();
     };
