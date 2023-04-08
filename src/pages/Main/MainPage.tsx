@@ -1,24 +1,31 @@
 import { SearchBar } from '../../components/ui/SearchBar/SearchBar';
-import { Cards } from '../../components/ui/Cards/Cards';
 import { useEffect, useState } from 'react';
-import { Country } from '../../data/Countries.model';
-import { getAllCountries, searchCountriesByName } from '../../components/ui/Cards/Cards.model';
+import { MovieMainInfo } from '../../data/Movies.model';
+import { getFullPosterPath } from '../../utilities/movies';
+import { MovieCards } from '../../components/ui/MovieCards/MovieCards';
+import { getPopularMovies, searchMovieByName } from '../../services/movieAPI';
 import './MainPage.scss';
 
 export const MainPage = (): JSX.Element => {
-  const [countries, setCountries] = useState<Country[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [movies, setMovies] = useState<MovieMainInfo[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState<string>('');
 
-  const requestCountries = async (controller: AbortController, searchText?: string) => {
+  const requestMovies = async (controller: AbortController, searchText?: string) => {
     try {
-      let countries: Country[];
+      let movies: MovieMainInfo[] = await getPopularMovies(controller);
       if (searchText) {
-        countries = await searchCountriesByName(searchText, controller);
+        movies = await searchMovieByName(searchText, controller);
       } else {
-        countries = await getAllCountries(controller);
+        movies = await getPopularMovies(controller);
       }
-      setCountries(countries);
+
+      movies = movies.map((movie: MovieMainInfo) => ({
+        ...movie,
+        poster_path: getFullPosterPath(movie.poster_path),
+      }));
+
+      setMovies(movies);
       setIsLoading(false);
     } catch (err) {
       setIsLoading(false);
@@ -28,7 +35,7 @@ export const MainPage = (): JSX.Element => {
   useEffect(() => {
     setIsLoading(true);
     const controller = new AbortController();
-    requestCountries(controller);
+    requestMovies(controller);
 
     return () => {
       controller.abort();
@@ -39,7 +46,7 @@ export const MainPage = (): JSX.Element => {
   useEffect(() => {
     setIsLoading(true);
     const controller = new AbortController();
-    requestCountries(controller, searchValue);
+    requestMovies(controller, searchValue);
 
     return () => {
       setIsLoading(false);
@@ -54,7 +61,7 @@ export const MainPage = (): JSX.Element => {
   return (
     <div className="main-page__container">
       <SearchBar searchSubmit={searchHandler} />
-      <Cards countries={countries} isLoading={isLoading} />
+      <MovieCards movies={movies} isLoading={isLoading} />
     </div>
   );
 };
