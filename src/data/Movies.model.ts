@@ -6,7 +6,7 @@ export type MovieResponses = {
 };
 
 export type MovieMainInfo = {
-  poster_path?: string;
+  poster_path: string;
   adult: boolean;
   overview: string;
   release_date: string;
