@@ -23,7 +23,6 @@ export const getPopularMovies = async (
 
     return movies.results;
   } catch (err) {
-    console.error(err);
     throw err;
   }
 };
@@ -44,7 +43,6 @@ export const searchMovieByName = async (
 
     return movies.results;
   } catch (err) {
-    console.error(err);
     throw err;
   }
 };
@@ -67,7 +65,6 @@ export const getMovieDetailsById = async (
 
     return movieDetails;
   } catch (err) {
-    console.error(err);
     throw err;
   }
 };

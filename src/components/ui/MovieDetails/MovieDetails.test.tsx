@@ -26,7 +26,6 @@ describe('Movie details', () => {
     const detailsContainer = screen.getByRole('article');
     const style = window.getComputedStyle(detailsContainer);
     const backgroundImage = style.getPropertyValue('background-image');
-    console.log(backgroundImage);
     expect(backgroundImage).toEqual('');
   });
 });
