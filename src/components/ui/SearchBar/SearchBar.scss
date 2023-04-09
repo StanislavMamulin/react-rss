@@ -43,6 +43,9 @@ $search-icon-size: calc($font-size - $default-padding);
   position: absolute;
   right: 0;
 
+  animation: fadeInAnimation 0.2s;
+  animation-timing-function: ease-in-out;
+
   &:hover {
     background-color: skyblue;
     border-radius: calc($wrapper-size / 2);
@@ -52,4 +55,13 @@ $search-icon-size: calc($font-size - $default-padding);
 .search-bar__clear-icon {
   height: $search-icon-size;
   width: $search-icon-size;
+}
+
+@keyframes fadeInAnimation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }

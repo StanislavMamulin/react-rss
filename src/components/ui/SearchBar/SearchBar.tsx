@@ -1,70 +1,67 @@
-import { BaseSyntheticEvent, Component } from 'react';
+import { BaseSyntheticEvent, useEffect, useRef, useState } from 'react';
 import { SEARCH_STORE_KEY } from './constants';
-import { SearchProps, SearchState } from './SearchBar.model';
 
 import SearchLogo from '../../../assets/icons/search.svg';
 import ClearLogo from '../../../assets/icons/clear.svg';
 
 import './SearchBar.scss';
 
-export class SearchBar extends Component<SearchProps, SearchState> {
-  state: SearchState = {
-    searchValue: '',
-  };
+const INITIAL_SEARCH_VALUE = '';
 
-  render(): JSX.Element {
-    return (
-      <div className="search-bar__wrapper">
-        <img src={SearchLogo} alt="Search" className="search-bar__icon"></img>
-        <input
-          className="search-bar__input"
-          type={'text'}
-          onChange={this.inputHandler}
-          placeholder={'Search...'}
-          value={this.state.searchValue}
-        ></input>
-        <div className="search-bar__clear-wrapper" onMouseDown={this.clearHandler}>
-          <img
-            src={ClearLogo}
-            alt="Clear search"
-            className="search-bar__clear-icon"
-            onMouseDown={this.clearHandler}
-          />
-        </div>
-      </div>
-    );
-  }
+export const SearchBar = (): JSX.Element => {
+  const [searchValue, setSearchValue] = useState<string>(INITIAL_SEARCH_VALUE);
+  const searchText = useRef(searchValue);
 
-  componentWillUnmount(): void {
-    if (this.state.searchValue) {
-      localStorage.setItem(SEARCH_STORE_KEY, this.state.searchValue);
+  useEffect(() => {
+    const savedSearch: string = localStorage.getItem(SEARCH_STORE_KEY) || INITIAL_SEARCH_VALUE;
+    setSearchValue(savedSearch);
+    searchText.current = savedSearch;
+
+    return () => {
+      localStorage.setItem(SEARCH_STORE_KEY, searchText.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (searchValue !== INITIAL_SEARCH_VALUE) {
+      searchText.current = searchValue || INITIAL_SEARCH_VALUE;
     }
-  }
+  }, [searchValue]);
 
-  componentDidMount(): void {
-    const savedSearch: string | null = localStorage.getItem(SEARCH_STORE_KEY);
-    if (savedSearch) {
-      this.setState({ searchValue: savedSearch });
-    }
-  }
+  const inputHandler = (event: BaseSyntheticEvent): void => {
+    const searchTextValue: string = event.target.value;
 
-  inputHandler = (event: BaseSyntheticEvent): void => {
-    const searchText: string = event.target.value;
+    setSearchValue(searchTextValue);
 
-    this.setState({
-      searchValue: searchText,
-    });
-
-    if (searchText.length === 0) {
+    if (searchTextValue.length === 0) {
       localStorage.removeItem(SEARCH_STORE_KEY);
+      searchText.current = INITIAL_SEARCH_VALUE;
     }
   };
 
-  clearHandler = (event: BaseSyntheticEvent) => {
+  const clearHandler = (event: BaseSyntheticEvent): void => {
     event.preventDefault();
-    this.setState({
-      searchValue: '',
-    });
+
+    setSearchValue(INITIAL_SEARCH_VALUE);
     localStorage.removeItem(SEARCH_STORE_KEY);
+    searchText.current = INITIAL_SEARCH_VALUE;
   };
-}
+
+  return (
+    <div className="search-bar__wrapper">
+      <img src={SearchLogo} alt="Search" className="search-bar__icon"></img>
+      <input
+        className="search-bar__input"
+        type={'text'}
+        onChange={inputHandler}
+        placeholder={'Search...'}
+        value={searchValue}
+      ></input>
+      {searchValue.length > 0 && (
+        <div role="button" className="search-bar__clear-wrapper" onMouseDown={clearHandler}>
+          <img src={ClearLogo} alt="Clear search" className="search-bar__clear-icon" />
+        </div>
+      )}
+    </div>
+  );
+};

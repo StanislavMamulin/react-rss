@@ -1,37 +1,30 @@
-import { PureComponent, ReactNode, SyntheticEvent } from 'react';
 import { Label } from './Label';
-import { Field } from './fields.model';
+import { ReactHookFormFieldProps } from './fields.model';
 
 import '../CreateCountry.scss';
+import { selectedNotDefaultSelect } from './validationRules';
 
 enum WeekStart {
   monday = 'Monday',
   sunday = 'Sunday',
+  unchosen = 'Please select day',
 }
 
-export class SelectWeekStart extends PureComponent implements Field<string> {
-  private weekStartDay = WeekStart.monday;
+const FIELD_NAME = 'startOfWeek';
 
-  dayChangedHandler = (event: SyntheticEvent) => {
-    this.weekStartDay = (event.target as HTMLSelectElement).value as WeekStart;
-  };
-
-  render(): ReactNode {
-    return (
-      <Label title="Start of week:">
-        <select name="start-of-week" onChange={this.dayChangedHandler}>
-          <option value={WeekStart.monday}>{WeekStart.monday}</option>
-          <option value={WeekStart.sunday}>{WeekStart.sunday}</option>
-        </select>
-      </Label>
-    );
-  }
-
-  validate = (): boolean => {
-    return true;
-  };
-
-  getValue = (): string => {
-    return this.weekStartDay;
-  };
-}
+export const SelectWeekStart = ({ register, errors }: ReactHookFormFieldProps): JSX.Element => (
+  <Label title="Start of week:" errorMessage={errors[FIELD_NAME]?.message?.toString()}>
+    <select
+      {...register(FIELD_NAME, {
+        validate: (selectedValue) => selectedNotDefaultSelect(selectedValue, WeekStart.unchosen),
+      })}
+      defaultValue={WeekStart.unchosen}
+    >
+      <option value={WeekStart.unchosen} disabled>
+        {WeekStart.unchosen}
+      </option>
+      <option value={WeekStart.monday}>{WeekStart.monday}</option>
+      <option value={WeekStart.sunday}>{WeekStart.sunday}</option>
+    </select>
+  </Label>
+);

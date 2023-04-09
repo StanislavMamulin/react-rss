@@ -1,4 +1,6 @@
-import { PureComponent, ReactNode, FormEvent, RefObject, createRef } from 'react';
+import { useEffect, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+
 import { ContinentChooser } from './Fields/Continent';
 
 import { LandLocked } from './Fields/LandLocked';
@@ -11,93 +13,77 @@ import { NationalDay } from './Fields/NationalDay';
 import { Country } from 'data/Countries.model';
 
 import './CreateCountry.scss';
+import { FormValues } from './Fields/fields.model';
 
 type CreateCountryProps = {
   addCardHandler: (countries: Country) => void;
   isCountryExist: (countries: Country) => boolean;
 };
 
-export class CreateCountry extends PureComponent<CreateCountryProps> {
-  fieldsRefs: RefObject<
-    | CountryName
-    | LandLocked
-    | Capital
-    | NationalDay
-    | ContinentChooser
-    | SelectWeekStart
-    | UploadFlag
-  >[] = [];
+export const CreateCountry = ({
+  addCardHandler,
+  isCountryExist,
+}: CreateCountryProps): JSX.Element => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitSuccessful },
+  } = useForm<FormValues>();
 
-  countryNameComponent: RefObject<CountryName> = createRef();
-  capitalComponent: RefObject<Capital> = createRef();
-  nationalDayComponent: RefObject<NationalDay> = createRef();
-  landlockedComponent: RefObject<LandLocked> = createRef();
-  continentComponent: RefObject<ContinentChooser> = createRef();
-  weekStartComponent: RefObject<SelectWeekStart> = createRef();
-  flagUploadComponent: RefObject<UploadFlag> = createRef();
+  const [clearFields, setClearFields] = useState(false);
 
-  constructor(props: CreateCountryProps) {
-    super(props);
-
-    this.fieldsRefs.push(this.countryNameComponent);
-    this.fieldsRefs.push(this.capitalComponent);
-    this.fieldsRefs.push(this.landlockedComponent);
-    this.fieldsRefs.push(this.nationalDayComponent);
-    this.fieldsRefs.push(this.continentComponent);
-    this.fieldsRefs.push(this.weekStartComponent);
-    this.fieldsRefs.push(this.flagUploadComponent);
-  }
-
-  handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    this.fieldsRefs.forEach((fieldRef) => {
-      fieldRef.current?.validate();
-    });
-    const allOk = this.fieldsRefs.every((fieldRef) => fieldRef.current?.validate());
-
-    const form = event.target as HTMLFormElement;
-
-    if (allOk) {
-      const newCountry = {
-        name: {
-          common: this.countryNameComponent.current?.getValue(),
-        },
-        capital: [this.capitalComponent.current?.getValue()],
-        nationalDay: this.nationalDayComponent.current?.getValue(),
-        startOfWeek: this.weekStartComponent.current?.getValue(),
-        continents: this.continentComponent.current?.getValue(),
-        landlocked: this.landlockedComponent.current?.getValue(),
-        flags: {
-          png: this.flagUploadComponent.current?.getValue(),
-        },
-      };
-
-      if (this.props.isCountryExist(newCountry)) {
-        return;
-      }
-
-      this.props.addCardHandler(newCountry);
-      form.reset();
-      this.continentComponent.current?.clear();
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
     }
+  }, [isSubmitSuccessful, reset]);
+
+  useEffect(() => {
+    if (clearFields) {
+      setClearFields(false);
+    }
+  }, [clearFields]);
+
+  const onSubmitHandle: SubmitHandler<FormValues> = (data) => {
+    const { coutryName, capital, nationalDay, startOfWeek, continents, landlocked, flagFile } =
+      data;
+
+    const newCountry: Country = {
+      name: {
+        common: coutryName,
+      },
+      capital: [capital],
+      nationalDay: nationalDay.toLocaleDateString(),
+      startOfWeek,
+      continents,
+      landlocked: landlocked === 'yes',
+      flags: {
+        png: URL.createObjectURL(flagFile[0]),
+      },
+    };
+
+    if (isCountryExist(newCountry)) {
+      return;
+    }
+
+    addCardHandler(newCountry);
+    setClearFields(true);
   };
 
-  render(): ReactNode {
-    return (
-      <div className="create__container">
-        <form className="create__form" onSubmit={this.handleSubmit}>
-          <CountryName ref={this.countryNameComponent} />
-          <Capital ref={this.capitalComponent} />
-          <NationalDay ref={this.nationalDayComponent} />
-          <SelectWeekStart ref={this.weekStartComponent} />
-          <ContinentChooser ref={this.continentComponent} />
-          <LandLocked ref={this.landlockedComponent} />
-          <UploadFlag ref={this.flagUploadComponent} />
+  return (
+    <div className="create__container">
+      <form className="create__form" onSubmit={handleSubmit(onSubmitHandle)}>
+        <CountryName register={register} errors={errors} />
+        <Capital register={register} errors={errors} />
+        <NationalDay register={register} errors={errors} />
+        <SelectWeekStart register={register} errors={errors} />
+        <ContinentChooser register={register} errors={errors} clear={clearFields} />
+        <LandLocked register={register} errors={errors} clear={clearFields} />
+        <UploadFlag register={register} errors={errors} />
 
-          <input type="submit" value="Create" className="create__submit" />
-        </form>
-      </div>
-    );
-  }
-}
+        <input type="submit" value="Create" className="create__submit" />
+      </form>
+    </div>
+  );
+};

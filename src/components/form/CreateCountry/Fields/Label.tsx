@@ -8,6 +8,16 @@ type LabelProps = {
   errorMessage?: string;
 };
 
+type LabelErrorProps = {
+  message?: string;
+};
+
+export const LabelError = ({ message }: LabelErrorProps): JSX.Element => (
+  <p className="label-error" role="alert">
+    {message}
+  </p>
+);
+
 export class Label extends Component<LabelProps> {
   render() {
     const { children, title, vertical, errorMessage } = this.props;
@@ -18,7 +28,7 @@ export class Label extends Component<LabelProps> {
           <p className="create__label-title">{title}</p>
           {children}
         </label>
-        {errorMessage ? <p className="create__label-error">{errorMessage}</p> : null}
+        {errorMessage ? <LabelError message={errorMessage} /> : null}
       </div>
     );
   }

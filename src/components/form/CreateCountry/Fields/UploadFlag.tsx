@@ -1,78 +1,29 @@
-import { createRef, PureComponent, ReactNode, RefObject } from 'react';
 import { Label } from './Label';
-import { Field } from './fields.model';
+import { ReactHookFormFieldProps } from './fields.model';
 
 import '../CreateCountry.scss';
+import { fieldIsRequired, isImageFile } from './validationRules';
 
-type UploadFlagProps = {
-  ref: RefObject<UploadFlag>;
+const FIELD_NAME = 'flagFile';
+
+export const UploadFlag = ({ register, errors }: ReactHookFormFieldProps): JSX.Element => {
+  const isError = errors[FIELD_NAME];
+
+  return (
+    <Label
+      title="Choose a country flag image:"
+      vertical
+      errorMessage={isError?.message?.toString()}
+    >
+      <input
+        type="file"
+        accept="image/png, image/jpeg"
+        className="flag-upload__input"
+        {...register(FIELD_NAME, {
+          required: fieldIsRequired,
+          validate: isImageFile,
+        })}
+      ></input>
+    </Label>
+  );
 };
-
-type UploadFlagState = {
-  errorMessage: string;
-};
-
-export class UploadFlag
-  extends PureComponent<UploadFlagProps, UploadFlagState>
-  implements Field<string>
-{
-  uploadInput = createRef<HTMLInputElement>();
-  state = {
-    errorMessage: '',
-  };
-
-  render(): ReactNode {
-    return (
-      <Label title="Choose a country flag image:" vertical errorMessage={this.state.errorMessage}>
-        <input
-          type="file"
-          accept="image/png, image/jpeg"
-          name="flag-file"
-          className="flag-upload__input"
-          ref={this.uploadInput}
-        ></input>
-      </Label>
-    );
-  }
-
-  validate = (): boolean => {
-    if (!this.uploadInput.current || !this.uploadInput.current.files) {
-      this.setState({
-        errorMessage: 'Please choose flag image',
-      });
-      return false;
-    }
-
-    const isFileChosen = this.uploadInput.current.files.length > 0;
-
-    if (!isFileChosen) {
-      this.setState({
-        errorMessage: 'Please choose flag image',
-      });
-      return false;
-    }
-
-    const file = this.uploadInput.current.files[0];
-
-    if (!file.type.match('image/*')) {
-      this.setState({
-        errorMessage: 'Incorrect format. Should be an image.',
-      });
-      return false;
-    }
-
-    this.setState({
-      errorMessage: '',
-    });
-    return true;
-  };
-
-  getValue = (): string => {
-    const flagImages = this.uploadInput.current?.files;
-    if (flagImages) {
-      return URL.createObjectURL(flagImages[0]);
-    }
-
-    return '';
-  };
-}

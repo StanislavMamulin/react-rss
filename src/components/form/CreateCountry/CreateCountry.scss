@@ -11,6 +11,12 @@
   gap: 12px
 }
 
+.create__label-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .create__label {
   display: flex;
   align-items: center;
@@ -34,7 +40,7 @@
   margin-top: 8px;
 }
 
-.create__label-error {
+.label-error {
   margin: 0;
   color: red;
   font-weight: bold;
