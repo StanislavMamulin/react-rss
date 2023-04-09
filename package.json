@@ -52,5 +52,8 @@
   },
   "lint-staged": {
     "*": "prettier --write"
+  },
+  "msw": {
+    "workerDirectory": "public"
   }
 }
