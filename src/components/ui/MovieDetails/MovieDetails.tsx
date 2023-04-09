@@ -16,9 +16,10 @@ type ShowedMovieDetails = Pick<
 
 type MovieDetailsProps = {
   movieDetails: ShowedMovieDetails;
+  onClose: () => void;
 };
 
-export const MovieDetails = ({ movieDetails }: MovieDetailsProps) => {
+export const MovieDetails = ({ movieDetails, onClose }: MovieDetailsProps) => {
   const {
     backdrop_path,
     genres,
@@ -48,8 +49,11 @@ export const MovieDetails = ({ movieDetails }: MovieDetailsProps) => {
         </div>
         <DetailText title="Genres: " text={getGenresList(genres)} />
         <DetailText title="Tagline: " text={tagline} />
-        {overview && <DetailText title="Overview: " text={overview} />}
+        <DetailText title="Overview: " text={overview} />
       </div>
+      <button className="close-btn" onClick={onClose}>
+        <span className="close__inner-text">✖</span>
+      </button>
     </div>
   );
 };

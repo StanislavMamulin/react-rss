@@ -1,7 +1,10 @@
 .details__wrapper {
   background-color: white;
   background-size: cover;
-  border-radius: 5px;
+  border-radius: 12px;
+  margin: 0 16px;
+  overflow: auto;
+  position: relative;
 }
 
 .details__content {
@@ -25,4 +28,25 @@
 
 .details__title {
   font-weight: bold;
+}
+
+.close-btn {
+  $size: 42px;
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  width: $size;
+  height: $size;
+  border-radius: calc($size / 2);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: wheat;
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.close__inner-text {
+  font-size: 28px;
 }
