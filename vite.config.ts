@@ -15,7 +15,7 @@ export default defineConfig({
     coverage: {
       provider: 'istanbul',
       all: true,
-      exclude: [...configDefaults.exclude, '**/public/**', '**/mocks/**'],
+      exclude: [...configDefaults.exclude, '**/public/**', '**/mocks/**', 'src/main.tsx'],
     },
   },
 });
