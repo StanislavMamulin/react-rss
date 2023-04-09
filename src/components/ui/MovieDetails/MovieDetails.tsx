@@ -39,7 +39,7 @@ export const MovieDetails = ({ movieDetails, onClose }: MovieDetailsProps) => {
   };
 
   return (
-    <div className="details__wrapper" style={getBackgroundStyle()}>
+    <article className="details__wrapper" style={getBackgroundStyle()}>
       <div className="details__content">
         <h2>{original_title}</h2>
         <div className="details__common-container">
@@ -56,11 +56,11 @@ export const MovieDetails = ({ movieDetails, onClose }: MovieDetailsProps) => {
           <span className="close__inner-text">✖</span>
         </button>
       )}
-    </div>
+    </article>
   );
 };
 
-const DetailText = ({ title, text }: { title: string; text: string | undefined }) => {
+export const DetailText = ({ title, text }: { title: string; text?: string }) => {
   if (!text) return null;
   return (
     <div className="details__info-container">
