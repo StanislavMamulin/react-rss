@@ -1,5 +1,5 @@
 import { rest } from 'msw';
-import { lotrSearch, popularMovies } from './mockData/movies';
+import { lotrSearch, lotrttt, popularMovies } from './mockData/movies';
 import base64Poster from './mockData/mockMoviePoster.jpg';
 import base64Backdrop from './mockData/mockMovieBackdrop.jpg';
 
@@ -27,8 +27,16 @@ export const handlers = [
       ctx.body(imageBuffer)
     );
   }),
+
   rest.get('https://api.themoviedb.org/3/search/movie*', (_, res, ctx) => {
-    console.log('--------- SEARCH MOCKUP--------------');
     return res(ctx.status(200), ctx.json(lotrSearch));
+  }),
+
+  rest.get(/api.themoviedb.org\/3\/movie\/\d+/i, (_, res, ctx) => {
+    return res(ctx.status(200), ctx.json(lotrttt));
+  }),
+
+  rest.get('https://api.themoviedb.org/3/movie/1', (_, res, ctx) => {
+    return res(ctx.status(404), ctx.json({ errorMessage: 'movie not found' }));
   }),
 ];

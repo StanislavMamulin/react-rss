@@ -6,7 +6,7 @@ export type MovieResponses = {
 };
 
 export type MovieMainInfo = {
-  poster_path: string;
+  poster_path: string | null;
   adult: boolean;
   overview: string;
   release_date: string;
@@ -15,7 +15,7 @@ export type MovieMainInfo = {
   original_title: string;
   original_language: string;
   title: string;
-  backdrop_path?: string;
+  backdrop_path?: string | null;
   popularity: number;
   vote_count: number;
   video: boolean;
