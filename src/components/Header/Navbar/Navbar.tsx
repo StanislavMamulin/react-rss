@@ -15,7 +15,7 @@ export class Navbar extends PureComponent {
               to="/"
               className={({ isActive }) => (isActive ? ACTIVE_LINK_CLASS : LINK_CLASS)}
             >
-              All countries
+              Popular movies
             </NavLink>
           </li>
           <li className="navbar__item">
