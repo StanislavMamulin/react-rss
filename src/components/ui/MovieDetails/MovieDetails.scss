@@ -45,6 +45,11 @@
 
   color: wheat;
   background-color: rgba(0, 0, 0, 0.9);
+
+  &:hover {
+    color: darkorange;
+    background-color: rgba(0, 0, 0, 0.6);
+  }
 }
 
 .close__inner-text {
