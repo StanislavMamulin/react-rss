@@ -2,6 +2,7 @@
 
 .spinner_container {
   @include common.center-absolute-element;
+  position: fixed;
 
   background-color: rgba(0, 0, 0, 0.3);
 }
