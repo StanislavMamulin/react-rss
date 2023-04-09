@@ -1,10 +1,10 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { SearchBar } from './SearchBar';
 
 describe('Search bar', () => {
   beforeEach(() => {
-    render(<SearchBar />);
+    render(<SearchBar searchSubmit={vi.fn()} />);
   });
 
   it('should display', () => {
