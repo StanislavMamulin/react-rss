@@ -1,9 +1,12 @@
 import { SearchBar } from '../../components/ui/SearchBar/SearchBar';
 import { useEffect, useState } from 'react';
-import { MovieMainInfo } from '../../data/Movies.model';
+import { createPortal } from 'react-dom';
+import { MovieDetails as MovieDetailsType, MovieMainInfo } from '../../data/Movies.model';
 import { getFullPosterPath } from '../../utilities/movies';
 import { MovieCards } from '../../components/ui/MovieCards/MovieCards';
 import { getMovieDetailsById, getPopularMovies, searchMovieByName } from '../../services/movieAPI';
+import { MovieDetails } from '../../components/ui/MovieDetails/MovieDetails';
+import { Modal } from '../../components/Modal/Modal';
 import './MainPage.scss';
 
 export const MainPage = (): JSX.Element => {
@@ -11,6 +14,8 @@ export const MainPage = (): JSX.Element => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState<string>('');
   const [selectedMovieId, setSelectedMovieId] = useState<number>(0);
+  const [movieDetails, setMovieDetails] = useState<MovieDetailsType | null>(null);
+  const [showModal, setShowModal] = useState(false);
 
   const requestMovies = async (controller: AbortController, searchText?: string) => {
     try {
@@ -64,6 +69,8 @@ export const MainPage = (): JSX.Element => {
     const getMovieDetails = async (id: number) => {
       const details = await getMovieDetailsById(id, controller);
       setIsLoading(false);
+      setMovieDetails(details);
+      setShowModal(true);
     };
 
     getMovieDetails(selectedMovieId);
@@ -84,9 +91,22 @@ export const MainPage = (): JSX.Element => {
     setSelectedMovieId(id);
   };
 
+  const onClose = () => {
+    setShowModal(false);
+    setSelectedMovieId(0);
+  };
+
   return (
     <div className="main-page__container">
       <SearchBar searchSubmit={searchHandler} />
+      {movieDetails &&
+        showModal &&
+        createPortal(
+          <Modal onClose={onClose}>
+            <MovieDetails movieDetails={movieDetails} />
+          </Modal>,
+          document.body
+        )}
       <MovieCards movies={movies} isLoading={isLoading} clickHandler={movieChosen} />
     </div>
   );

@@ -16,7 +16,7 @@ type ShowedMovieDetails = Pick<
 
 type MovieDetailsProps = {
   movieDetails: ShowedMovieDetails;
-  onClose: () => void;
+  onClose?: () => void;
 };
 
 export const MovieDetails = ({ movieDetails, onClose }: MovieDetailsProps) => {
@@ -51,9 +51,11 @@ export const MovieDetails = ({ movieDetails, onClose }: MovieDetailsProps) => {
         <DetailText title="Tagline: " text={tagline} />
         <DetailText title="Overview: " text={overview} />
       </div>
-      <button className="close-btn" onClick={onClose}>
-        <span className="close__inner-text">✖</span>
-      </button>
+      {onClose && (
+        <button className="close-btn" onClick={onClose}>
+          <span className="close__inner-text">✖</span>
+        </button>
+      )}
     </div>
   );
 };
