@@ -19,7 +19,7 @@ export const MainPage = (): JSX.Element => {
 
   const requestMovies = async (controller: AbortController, searchText?: string) => {
     try {
-      let movies: MovieMainInfo[] = await getPopularMovies(controller);
+      let movies: MovieMainInfo[];
       if (searchText) {
         movies = await searchMovieByName(searchText, controller);
       } else {
