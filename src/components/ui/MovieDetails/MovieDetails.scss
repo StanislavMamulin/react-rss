@@ -1,0 +1,28 @@
+.details__wrapper {
+  background-color: white;
+  background-size: cover;
+  border-radius: 5px;
+}
+
+.details__content {
+  margin: 8px;
+  padding: 8px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 5px;
+}
+
+.details__common-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.details__info-container {
+  text-align: start;
+  padding: 8px 4px;
+}
+
+.details__title {
+  font-weight: bold;
+}

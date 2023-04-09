@@ -22,7 +22,7 @@ export type MovieMainInfo = {
   vote_average: number;
 };
 
-type GenresItem = {
+export type GenresItem = {
   id: number;
   name: string;
 };
