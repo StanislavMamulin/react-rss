@@ -4,10 +4,10 @@ import { render, screen } from '@testing-library/react';
 import { MainPage } from '../../../pages/Main/MainPage';
 
 describe('Cards test', () => {
-  it('should render all 250 countries', () => {
+  it('should render top 20 popular movies cards', async () => {
     render(<MainPage />);
 
-    const cards = screen.queryAllByText(/country name/i);
-    expect(cards.length).toEqual(250);
+    const cards = await screen.findAllByText(/release/i);
+    expect(cards.length).toEqual(20);
   });
 });
