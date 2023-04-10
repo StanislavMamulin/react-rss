@@ -17,11 +17,12 @@ export const SearchBar = ({ searchSubmit }: SearchProps): JSX.Element => {
     const savedSearch: string = localStorage.getItem(SEARCH_STORE_KEY) || INITIAL_SEARCH_VALUE;
     setSearchValue(savedSearch);
     searchText.current = savedSearch;
+    searchSubmit(savedSearch);
 
     return () => {
       localStorage.setItem(SEARCH_STORE_KEY, searchText.current);
     };
-  }, []);
+  }, [searchSubmit]);
 
   useEffect(() => {
     if (searchValue !== INITIAL_SEARCH_VALUE) {
