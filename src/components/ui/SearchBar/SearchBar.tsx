@@ -1,14 +1,15 @@
-import { BaseSyntheticEvent, useEffect, useRef, useState } from 'react';
+import { BaseSyntheticEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { SEARCH_STORE_KEY } from './constants';
 
 import SearchLogo from '../../../assets/icons/search.svg';
 import ClearLogo from '../../../assets/icons/clear.svg';
 
 import './SearchBar.scss';
+import { SearchProps } from './SearchBar.model';
 
 const INITIAL_SEARCH_VALUE = '';
 
-export const SearchBar = (): JSX.Element => {
+export const SearchBar = ({ searchSubmit }: SearchProps): JSX.Element => {
   const [searchValue, setSearchValue] = useState<string>(INITIAL_SEARCH_VALUE);
   const searchText = useRef(searchValue);
 
@@ -16,11 +17,12 @@ export const SearchBar = (): JSX.Element => {
     const savedSearch: string = localStorage.getItem(SEARCH_STORE_KEY) || INITIAL_SEARCH_VALUE;
     setSearchValue(savedSearch);
     searchText.current = savedSearch;
+    searchSubmit(savedSearch);
 
     return () => {
       localStorage.setItem(SEARCH_STORE_KEY, searchText.current);
     };
-  }, []);
+  }, [searchSubmit]);
 
   useEffect(() => {
     if (searchValue !== INITIAL_SEARCH_VALUE) {
@@ -47,6 +49,12 @@ export const SearchBar = (): JSX.Element => {
     searchText.current = INITIAL_SEARCH_VALUE;
   };
 
+  const onSubmit = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.code === 'Enter') {
+      searchSubmit(searchValue);
+    }
+  };
+
   return (
     <div className="search-bar__wrapper">
       <img src={SearchLogo} alt="Search" className="search-bar__icon"></img>
@@ -56,6 +64,7 @@ export const SearchBar = (): JSX.Element => {
         onChange={inputHandler}
         placeholder={'Search...'}
         value={searchValue}
+        onKeyDown={onSubmit}
       ></input>
       {searchValue.length > 0 && (
         <div role="button" className="search-bar__clear-wrapper" onMouseDown={clearHandler}>

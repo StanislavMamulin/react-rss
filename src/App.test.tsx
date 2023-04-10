@@ -7,8 +7,8 @@ describe('App rendering', () => {
   it('should render header', async () => {
     render(<App />, { wrapper: BrowserRouter });
 
-    const allCountries = screen.getByText(/^all countries/i);
-    expect(allCountries).toBeInTheDocument();
+    const topMovies = screen.getByText(/^popular movies/i);
+    expect(topMovies).toBeInTheDocument();
     const navigationLinks = screen.getAllByRole('listitem');
     expect(navigationLinks).toHaveLength(3);
   });
@@ -16,8 +16,8 @@ describe('App rendering', () => {
   it('should render main page', async () => {
     render(<App />, { wrapper: BrowserRouter });
 
-    const countries = await screen.findAllByText(/country name/i);
-    expect(countries).toHaveLength(250);
+    const movies = await screen.findAllByText(/release/i);
+    expect(movies).toHaveLength(20);
   });
 
   it('should work navigation', () => {
