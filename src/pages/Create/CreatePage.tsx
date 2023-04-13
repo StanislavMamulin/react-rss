@@ -4,17 +4,22 @@ import { Country } from 'data/Countries.model';
 import { CardsList } from '../../components/ui/Cards/CardsList';
 import ContinentsImage from '../../assets/images/Continents.png';
 
+import type { RootState } from '../../redux/store';
+import { useSelector, useDispatch } from 'react-redux';
+import { addCountry } from '../../redux/createCountrySlice';
+
 import './CreatePage.scss';
 
 const MS_TO_SHOW_SUCCESS_MESSAGE = 2000;
 
 export const CreatePage = (): JSX.Element => {
-  const [fantasyCountries, setFantasyCountries] = useState<Country[]>([]);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [successMessageShow, setSuccessMessageShow] = useState<boolean>(false);
+  const fantasyCountries = useSelector((state: RootState) => state.countries.countries);
+  const dispatch = useDispatch();
 
   const addCardHandler = (country: Country): void => {
-    setFantasyCountries((prevCountries) => [...prevCountries, country]);
+    dispatch(addCountry(country));
     setErrorMessage('');
     setSuccessMessageShow(true);
 
