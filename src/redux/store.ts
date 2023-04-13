@@ -1,8 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
 import countriesReducer from './createCountrySlice';
+import moviesReducer from './movieSlice';
 
 export const store = configureStore({
-  reducer: { countries: countriesReducer },
+  reducer: { countries: countriesReducer, movies: moviesReducer },
 });
 
 export type RootState = ReturnType<typeof store.getState>;
