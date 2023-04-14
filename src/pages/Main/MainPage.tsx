@@ -1,5 +1,5 @@
 import { SearchBar } from '../../components/ui/SearchBar/SearchBar';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { MovieDetails as MovieDetailsType, MovieMainInfo } from '../../data/Movies.model';
 import { getFullPosterPath } from '../../utilities/movies';
@@ -83,13 +83,13 @@ export const MainPage = (): JSX.Element => {
     };
   }, [selectedMovieId]);
 
-  const searchHandler = (searchText: string): void => {
+  const searchHandler = useCallback((searchText: string): void => {
     setSearchValue(searchText);
-  };
+  }, []);
 
-  const movieChosen = (id: number): void => {
+  const movieChosen = useCallback((id: number): void => {
     setSelectedMovieId(id);
-  };
+  }, []);
 
   const onClose = () => {
     setShowModal(false);
