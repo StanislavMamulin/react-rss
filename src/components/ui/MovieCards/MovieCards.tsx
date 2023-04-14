@@ -1,6 +1,6 @@
-import { Loader } from '../Loader/Loader';
 import { MovieMainInfo } from '../../../data/Movies.model';
 import { CardMovie } from '../CardMovie/CardMovie';
+import { getFullPosterPath } from '../../../utilities/movies';
 
 type MovieListProps = {
   movies: MovieMainInfo[];
@@ -14,16 +14,23 @@ type MovieCardsProps = {
 };
 
 export const MovieList = ({ movies, clickHandler }: MovieListProps): JSX.Element => {
-  const listMovies: JSX.Element[] = movies.map((movie: MovieMainInfo) => (
-    <div
-      key={movie.id}
-      onClick={() => {
-        clickHandler(movie.id);
-      }}
-    >
-      <CardMovie movie={movie} />
-    </div>
-  ));
+  const listMovies: JSX.Element[] = movies.map((movie: MovieMainInfo) => {
+    const movieWithFullPosterPath: MovieMainInfo = {
+      ...movie,
+      poster_path: getFullPosterPath(movie.poster_path),
+    };
+
+    return (
+      <div
+        key={movie.id}
+        onClick={() => {
+          clickHandler(movie.id);
+        }}
+      >
+        <CardMovie movie={movieWithFullPosterPath} />
+      </div>
+    );
+  });
 
   return <>{listMovies}</>;
 };
@@ -34,7 +41,7 @@ const NothingFound = (): JSX.Element => (
   </>
 );
 
-export const MovieCards = ({ movies, isLoading, clickHandler }: MovieCardsProps) => {
+export const MovieCards = ({ movies, clickHandler }: MovieCardsProps) => {
   return (
     <div className="cards-wrapper">
       {movies.length === 0 ? (
@@ -42,7 +49,6 @@ export const MovieCards = ({ movies, isLoading, clickHandler }: MovieCardsProps)
       ) : (
         <MovieList movies={movies} clickHandler={clickHandler} />
       )}
-      {isLoading && <Loader />}
     </div>
   );
 };
