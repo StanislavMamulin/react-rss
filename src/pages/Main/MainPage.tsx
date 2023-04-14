@@ -23,7 +23,11 @@ export const MainPage = (): JSX.Element => {
   const { data: popularMovies = [], isFetching } = useGetPopularMoviesQuery(undefined, {
     skip: searchValue !== '',
   });
-  const { data: findedMovies = [], isLoading } = useSearchMovieByNameQuery(searchValue, {
+  const {
+    data: findedMovies = [],
+    isLoading,
+    isFetching: isSearchFetching,
+  } = useSearchMovieByNameQuery(searchValue, {
     skip: searchValue === '',
   });
 
@@ -52,7 +56,7 @@ export const MainPage = (): JSX.Element => {
   );
 
   const renderMovies =
-    isFetching || isLoading ? (
+    isFetching || isLoading || isSearchFetching ? (
       <Loader />
     ) : (
       <MovieCards movies={movies} clickHandler={movieChosen} />
