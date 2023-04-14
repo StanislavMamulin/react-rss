@@ -1,22 +1,39 @@
 import { useCallback, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { SearchBar } from '../../components/ui/SearchBar/SearchBar';
-import { MovieDetails as MovieDetailsType } from '../../data/Movies.model';
+import { MovieDetails as MovieDetailsType, MovieMainInfo } from '../../data/Movies.model';
 import { MovieCards } from '../../components/ui/MovieCards/MovieCards';
-import { getMovieDetailsById, useGetPopularMoviesQuery } from '../../services/movieAPI';
+import {
+  getMovieDetailsById,
+  useGetPopularMoviesQuery,
+  useSearchMovieByNameQuery,
+} from '../../services/movieAPI';
 import { MovieDetails } from '../../components/ui/MovieDetails/MovieDetails';
 import { Modal } from '../../components/Modal/Modal';
 
 import './MainPage.scss';
 import { Loader } from '../../components/ui/Loader/Loader';
+import { RootState } from '../../redux/store';
+import { setSearchMovie } from '../../redux/movieSlice';
 
 export const MainPage = (): JSX.Element => {
-  const [searchValue, setSearchValue] = useState<string>('');
+  const dispatch = useDispatch();
+
   const [selectedMovieId, setSelectedMovieId] = useState<number>(0);
   const [movieDetails, setMovieDetails] = useState<MovieDetailsType | null>(null);
   const [showModal, setShowModal] = useState(false);
-  const { data: movies = [], isFetching, isLoading } = useGetPopularMoviesQuery();
+  const searchValue = useSelector((state: RootState) => state.movies.searchMovieName);
+
+  const { data: popularMovies = [], isFetching } = useGetPopularMoviesQuery(undefined, {
+    skip: searchValue !== '',
+  });
+  const { data: findedMovies = [], isLoading } = useSearchMovieByNameQuery(searchValue, {
+    skip: searchValue === '',
+  });
+
+  const movies: MovieMainInfo[] = popularMovies.length !== 0 ? popularMovies : findedMovies;
 
   useEffect(() => {
     if (selectedMovieId === 0) return;
@@ -38,9 +55,12 @@ export const MainPage = (): JSX.Element => {
     };
   }, [selectedMovieId]);
 
-  const searchHandler = useCallback((searchText: string): void => {
-    setSearchValue(searchText);
-  }, []);
+  const searchHandler = useCallback(
+    (searchText: string): void => {
+      dispatch(setSearchMovie(searchText));
+    },
+    [dispatch]
+  );
 
   const movieChosen = useCallback((id: number): void => {
     setSelectedMovieId(id);
@@ -51,11 +71,12 @@ export const MainPage = (): JSX.Element => {
     setSelectedMovieId(0);
   };
 
-  const renderMovies = isFetching ? (
-    <Loader />
-  ) : (
-    <MovieCards movies={movies} isLoading={isLoading} clickHandler={movieChosen} />
-  );
+  const renderMovies =
+    isFetching || isLoading ? (
+      <Loader />
+    ) : (
+      <MovieCards movies={movies} clickHandler={movieChosen} />
+    );
 
   const renderModal =
     movieDetails &&

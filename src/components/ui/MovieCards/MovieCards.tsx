@@ -9,7 +9,6 @@ type MovieListProps = {
 
 type MovieCardsProps = {
   movies: MovieMainInfo[];
-  isLoading: boolean;
   clickHandler: (id: number) => void;
 };
 
