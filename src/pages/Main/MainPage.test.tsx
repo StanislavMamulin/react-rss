@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '../../utilities/test-utils';
 import { MainPage } from './MainPage';
 
 describe('Main page', () => {
@@ -43,5 +43,23 @@ describe('Main page', () => {
 
     movieOverview = await screen.findByText(/overview/i);
     expect(movieOverview).toBeInTheDocument();
+  });
+
+  it('should display "Nothing found" if nothing found', async () => {
+    const searchInput = screen.getByPlaceholderText(/search/i);
+    fireEvent.input(searchInput, {
+      target: {
+        value: 'not exists movie name 123fgkgirjgj',
+      },
+    });
+
+    fireEvent.keyDown(searchInput, {
+      key: 'Enter',
+      code: 'Enter',
+      charCode: 13,
+    });
+
+    const infoText = await screen.findByText(/nothing/i);
+    expect(infoText).toBeInTheDocument();
   });
 });
