@@ -774,3 +774,10 @@ export const lotrttt: MovieDetails = {
   vote_average: 8.377,
   vote_count: 19549,
 };
+
+export const nothingFound: MovieResponses = {
+  page: 1,
+  results: [],
+  total_pages: 1,
+  total_results: 0,
+};
