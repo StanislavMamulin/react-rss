@@ -49,7 +49,7 @@ describe('Main page', () => {
     const searchInput = screen.getByPlaceholderText(/search/i);
     fireEvent.input(searchInput, {
       target: {
-        value: 'not exists movie name 123fgkgirjgj',
+        value: 'notexistsmovie',
       },
     });
 
