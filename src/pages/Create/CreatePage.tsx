@@ -2,7 +2,7 @@ import { CreateCountry } from '../../components/form/CreateCountry/CreateCountry
 import { ReactNode, useState } from 'react';
 import { Country } from 'data/Countries.model';
 import { CardsList } from '../../components/ui/Cards/CardsList';
-import ContinentsImage from '../../assets/images/Continents.png';
+import ContinentsImage from '../../assets/images/Continents.jpg';
 
 import type { RootState } from '../../redux/store';
 import { useSelector, useDispatch } from 'react-redux';
