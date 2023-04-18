@@ -1,12 +1,21 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
 import { render, screen, fireEvent, act } from '../../utilities/test-utils';
 import { MainPage } from './MainPage';
+import { server } from '../../mocks/server';
 
 describe('Main page', () => {
+  beforeAll(() => {
+    server.listen();
+  });
+
   beforeEach(() => {
     act(() => {
       render(<MainPage />);
     });
+  });
+
+  afterAll(() => {
+    server.close();
   });
 
   it('should render main page', async () => {
@@ -29,7 +38,7 @@ describe('Main page', () => {
     });
 
     const lords = await screen.findAllByText(/lord/i);
-    expect(lords.length).toEqual(13);
+    expect(lords.length).toEqual(15);
   });
 
   it('should show detail movie information in modal window', async () => {
