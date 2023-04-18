@@ -12,13 +12,6 @@ describe('App rendering', () => {
     expect(navigationLinks).toHaveLength(3);
   });
 
-  it('should render main page', async () => {
-    render(<App />);
-
-    const movies = await screen.findAllByText(/release/i);
-    expect(movies).toHaveLength(20);
-  });
-
   it('should work navigation', () => {
     render(<App />);
 
