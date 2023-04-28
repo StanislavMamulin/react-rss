@@ -11,7 +11,7 @@
     "testsonly": "vitest",
     "build:client": "tsc && vite build --outDir dist/client",
     "build:server": "tsc && vite build --outDir dist/server --ssr src/server/ServerApp.tsx",
-    "build": "tsc && npm run build:client && npm run build:server",
+    "build": "npm run build:client && npm run build:server",
     "start": "ts-node --esm server.ts"
   },
   "dependencies": {
