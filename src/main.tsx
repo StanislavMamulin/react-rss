@@ -12,7 +12,8 @@ if (process.env.NODE_ENV === 'development') {
   worker.start();
 }
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+ReactDOM.hydrateRoot(
+  document.getElementById('root') as HTMLElement,
   <React.StrictMode>
     <BrowserRouter>
       <Provider store={store}>
