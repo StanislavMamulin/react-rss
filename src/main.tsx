@@ -10,15 +10,26 @@ import './index.css';
 
 if (process.env.NODE_ENV === 'development') {
   worker.start();
-}
 
-ReactDOM.hydrateRoot(
-  document.getElementById('root') as HTMLElement,
-  <React.StrictMode>
-    <BrowserRouter>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </BrowserRouter>
-  </React.StrictMode>
-);
+  // for e2e test workaround
+  ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+    <React.StrictMode>
+      <BrowserRouter>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </BrowserRouter>
+    </React.StrictMode>
+  );
+} else {
+  ReactDOM.hydrateRoot(
+    document.getElementById('root') as HTMLElement,
+    <React.StrictMode>
+      <BrowserRouter>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </BrowserRouter>
+    </React.StrictMode>
+  );
+}

@@ -8,40 +8,45 @@ import istanbul from 'vite-plugin-istanbul';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/',
+  server: {
+    host: true,
+    port: 3000,
+    watch: {
+      ignored: ['**/coverage/**'],
+    },
+  },
   plugins: [
     react(),
     istanbul({
-      include: 'src/**/*.{ts,tsx}',
-      exclude: ['**/node_modules/**', '**/public/**', '**/mocks/**', '**/instrumented/**'],
       cypress: true,
-      requireEnv: true,
+      requireEnv: false,
     }),
   ],
+  build: {
+    sourcemap: true,
+  },
   test: {
     globals: true,
     environment: 'jsdom',
     setupFiles: './src/test/setup.ts',
-    exclude: [
-      ...configDefaults.exclude,
-      '**/public/**',
-      '**/mocks/**',
-      'src/main.tsx',
-      '**/instrumented/**',
-    ],
     coverage: {
-      provider: 'istanbul',
       all: true,
+      reporter: ['text', 'lcov'],
       exclude: [
         ...configDefaults.exclude,
         '**/public/**',
         '**/mocks/**',
         'src/main.tsx',
-        '**/instrumented/**',
+        'src/**/*.test.tsx',
+        'src/**/*.test.ts',
+        'src/**/index.ts',
+        '**/*.model.ts',
+        '**/constants.ts',
+        '**/types.ts',
+        '**/*.config.ts',
+        '**/*.d.ts',
       ],
     },
-  },
-  server: {
-    host: true,
-    port: 3001,
   },
 });

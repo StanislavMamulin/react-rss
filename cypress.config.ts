@@ -1,21 +1,24 @@
+import codeCoverageTask from '@cypress/code-coverage/task';
 import { defineConfig } from 'cypress';
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
+import vitePreprocessor from 'cypress-vite';
 
 export default defineConfig({
   env: {
     codeCoverage: {
-      exclude: ['cypress/**/*.*', 'instrumented/**/*.*'],
-      url: 'http://localhost:3001/__coverage__',
+      exclude: ['cypress/**/*.*', '**/mocks/**', '**/utilities/**'],
     },
   },
-  e2e: {
-    baseUrl: 'http://localhost:3001',
-    setupNodeEvents(on, config) {
-      // implement node event listeners here
-      require('@cypress/code-coverage/task')(on, config);
 
+  e2e: {
+    baseUrl: 'http://localhost:3000',
+    setupNodeEvents(on, config) {
+      on('file:preprocessor', vitePreprocessor());
+      codeCoverageTask(on, config);
       return config;
     },
   },
+
+  video: false,
+  defaultCommandTimeout: 10000,
+  screenshotOnRunFailure: false,
 });
