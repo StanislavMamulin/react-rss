@@ -11,7 +11,7 @@ const vite = await createViteServer({
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 const html = fs.readFileSync(path.resolve(__dirname, './dist/client/index.html')).toString();
 
