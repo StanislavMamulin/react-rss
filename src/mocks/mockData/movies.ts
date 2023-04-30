@@ -1,4 +1,4 @@
-import { MovieDetails, MovieResponses } from 'data/Movies.model';
+import { MovieDetails, MovieResponses } from '../../data/Movies.model';
 
 export const popularMovies: MovieResponses = {
   page: 1,

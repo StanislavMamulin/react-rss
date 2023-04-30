@@ -1,4 +1,4 @@
-import { Subset } from 'utilities/types';
+import { Subset } from '../utilities/types';
 
 type NameStr = {
   common: string;

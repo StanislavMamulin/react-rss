@@ -10,7 +10,7 @@ import { SelectWeekStart } from './Fields/WeekStart';
 import { CountryName } from './Fields/CountryName';
 import { Capital } from './Fields/Capital';
 import { NationalDay } from './Fields/NationalDay';
-import { Country } from 'data/Countries.model';
+import { Country } from '../../../data/Countries.model';
 
 import './CreateCountry.scss';
 import { FormValues } from './Fields/fields.model';
