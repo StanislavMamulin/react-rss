@@ -25,5 +25,7 @@ dist-ssr
 
 # Test
 coverage
+instrumented
+.nyc_output
 
 .env
