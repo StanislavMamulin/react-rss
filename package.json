@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "nodemon --esm server.ts",
-    "cy:cover": "start-server-and-test csr:dev http-get://localhost:3000 cy:run-e2e && npx nyc report && npx nyc report --reporter=text-summary",
+    "cy:cover": "start-server-and-test start http-get://localhost:3000 cy:run-e2e && npx nyc report && npx nyc report --reporter=text-summary",
     "vi:cover": "vitest run --coverage",
     "build": "npm run build:client && npm run build:server",
     "dev": "vite",
@@ -18,7 +18,7 @@
     "testsonly": "vitest",
     "cy:open-e2e": "cypress open --e2e --browser chrome",
     "cy:run-e2e": "cypress run --e2e",
-    "cy:e2e": "start-server-and-test dev http-get://localhost:3000 cy:open-e2e"
+    "cy:e2e": "start-server-and-test start http-get://localhost:3000 cy:open-e2e"
   },
   "dependencies": {
     "@csstools/normalize.css": "^12.0.0",
