@@ -1,8 +1,5 @@
 import { BaseSyntheticEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
 
-import SearchLogo from '../../../assets/icons/search.svg';
-import ClearLogo from '../../../assets/icons/clear.svg';
-
 import './SearchBar.scss';
 import { SearchProps } from './SearchBar.model';
 import { useDispatch, useSelector } from 'react-redux';
@@ -58,7 +55,7 @@ export const SearchBar = ({ searchSubmit }: SearchProps): JSX.Element => {
 
   return (
     <div className="search-bar__wrapper">
-      <img src={SearchLogo} alt="Search" className="search-bar__icon"></img>
+      <img src="/icons/search.svg" alt="Search" className="search-bar__icon"></img>
       <input
         className="search-bar__input"
         type={'text'}
@@ -69,7 +66,7 @@ export const SearchBar = ({ searchSubmit }: SearchProps): JSX.Element => {
       ></input>
       {searchValue.length > 0 && (
         <div role="button" className="search-bar__clear-wrapper" onMouseDown={clearHandler}>
-          <img src={ClearLogo} alt="Clear search" className="search-bar__clear-icon" />
+          <img src="/icons/clear.svg" alt="Clear search" className="search-bar__clear-icon" />
         </div>
       )}
     </div>

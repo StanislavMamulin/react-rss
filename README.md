@@ -1,10 +1,10 @@
 # react-rss
-## Week 1. Components
+## Week 6. SSR
 ---
-### Commands to run checking:
-- Run project:
+### Commands:
+- Run server for SSR:
 ```
-npm run dev
+npm run start
 ```
 
 - Run eslint checking:
@@ -12,8 +12,12 @@ npm run dev
 npm run lint
 ```
 
-- Running tests and displaying a coverage report:
+- Running E2E tests and displaying a coverage report:
 ```
-npm run test
+npm run cy:cover
 ```
 
+- Running unit tests and displaying a coverage report:
+```
+npm run vi:cover
+```

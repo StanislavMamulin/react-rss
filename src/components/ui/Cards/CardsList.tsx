@@ -1,5 +1,5 @@
 import { Card } from '../Card/Card';
-import { Country } from 'data/Countries.model';
+import { Country } from '../../../data/Countries.model';
 import { CardsListProps } from './Cards.model';
 
 export const CardsList = ({ countries }: CardsListProps): JSX.Element => {

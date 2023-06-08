@@ -1,4 +1,4 @@
-import { GenresItem } from 'data/Movies.model';
+import { GenresItem } from '../data/Movies.model';
 
 const BASE_URL = 'http://image.tmdb.org/t/p/';
 const backdropSizes = ['w300', 'w780', 'w1280', 'original'];

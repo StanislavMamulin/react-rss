@@ -1,8 +1,7 @@
 import { CreateCountry } from '../../components/form/CreateCountry/CreateCountry';
 import { ReactNode, useState } from 'react';
-import { Country } from 'data/Countries.model';
+import { Country } from '../../data/Countries.model';
 import { CardsList } from '../../components/ui/Cards/CardsList';
-import ContinentsImage from '../../assets/images/Continents.jpg';
 
 import type { RootState } from '../../redux/store';
 import { useSelector, useDispatch } from 'react-redux';
@@ -49,7 +48,7 @@ export const CreatePage = (): JSX.Element => {
     <div className="create-page__container">
       {successMessageShow && successfullyCreated()}
       <h1>Create your own fantasy world</h1>
-      <img src={ContinentsImage} className="create-page__continent-image" />
+      <img src="/images/Continents.jpg" alt="Continents" className="create-page__continent-image" />
       <CreateCountry addCardHandler={addCardHandler} isCountryExist={isCountryExist} />
       {errorMessage ? <p className="name-error">{errorMessage}</p> : null}
       <div className="cards-wrapper">

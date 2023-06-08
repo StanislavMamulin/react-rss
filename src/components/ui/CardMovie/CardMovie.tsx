@@ -1,5 +1,5 @@
 import { MovieMainInfo } from '../../../data/Movies.model';
-import placeholder from '../../../assets/images/poster_placeholder.jpg';
+
 import './CardMovie.scss';
 
 type CardMovieProps = {
@@ -12,7 +12,11 @@ export const CardMovie = ({ movie }: CardMovieProps) => {
   return (
     <div className="card-wrapper">
       <div className="movie-poster__wrapper">
-        <img className="movie-poster__img" src={poster_path || placeholder} />
+        <img
+          className="movie-poster__img"
+          src={poster_path || '/images/poster_placeholder.jpg'}
+          alt="poster placeholder"
+        />
       </div>
       <div className="main-info__wrapper">
         <h1 className="main-info__title">{title}</h1>

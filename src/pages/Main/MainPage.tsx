@@ -1,5 +1,4 @@
 import { useCallback, useState } from 'react';
-import { createPortal } from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { SearchBar } from '../../components/ui/SearchBar/SearchBar';
@@ -12,6 +11,7 @@ import { Loader } from '../../components/ui/Loader/Loader';
 import { RootState } from '../../redux/store';
 import { setSearchMovie } from '../../redux/movieSlice';
 import { DetailsModal } from '../../components/DetailsModal/DetailsModal';
+import { ClientOnlyPortal } from '../../components/Modal/ClientOnlyPortal';
 
 export const MainPage = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -50,9 +50,10 @@ export const MainPage = (): JSX.Element => {
     setSelectedMovieId(0);
   };
 
-  const renderModal = createPortal(
-    <DetailsModal onClose={onClose} selectedMovieId={selectedMovieId} />,
-    document.body
+  const renderModal = (
+    <ClientOnlyPortal>
+      <DetailsModal onClose={onClose} selectedMovieId={selectedMovieId} />
+    </ClientOnlyPortal>
   );
 
   const renderMovies =
