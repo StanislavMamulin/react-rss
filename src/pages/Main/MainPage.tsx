@@ -1,113 +1,73 @@
+import { useCallback, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { SearchBar } from '../../components/ui/SearchBar/SearchBar';
-import { useEffect, useState } from 'react';
-import { createPortal } from 'react-dom';
-import { MovieDetails as MovieDetailsType, MovieMainInfo } from '../../data/Movies.model';
-import { getFullPosterPath } from '../../utilities/movies';
+import { MovieMainInfo } from '../../data/Movies.model';
 import { MovieCards } from '../../components/ui/MovieCards/MovieCards';
-import { getMovieDetailsById, getPopularMovies, searchMovieByName } from '../../services/movieAPI';
-import { MovieDetails } from '../../components/ui/MovieDetails/MovieDetails';
-import { Modal } from '../../components/Modal/Modal';
+import { useGetPopularMoviesQuery, useSearchMovieByNameQuery } from '../../services/movieAPI';
+
 import './MainPage.scss';
+import { Loader } from '../../components/ui/Loader/Loader';
+import { RootState } from '../../redux/store';
+import { setSearchMovie } from '../../redux/movieSlice';
+import { DetailsModal } from '../../components/DetailsModal/DetailsModal';
+import { ClientOnlyPortal } from '../../components/Modal/ClientOnlyPortal';
 
 export const MainPage = (): JSX.Element => {
-  const [movies, setMovies] = useState<MovieMainInfo[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [searchValue, setSearchValue] = useState<string>('');
+  const dispatch = useDispatch();
+
   const [selectedMovieId, setSelectedMovieId] = useState<number>(0);
-  const [movieDetails, setMovieDetails] = useState<MovieDetailsType | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const searchValue = useSelector((state: RootState) => state.movies.searchMovieName);
 
-  const requestMovies = async (controller: AbortController, searchText?: string) => {
-    try {
-      let movies: MovieMainInfo[];
-      if (searchText) {
-        movies = await searchMovieByName(searchText, controller);
-      } else {
-        movies = await getPopularMovies(controller);
-      }
+  const { data: popularMovies = [], isFetching } = useGetPopularMoviesQuery(undefined, {
+    skip: searchValue !== '',
+  });
+  const {
+    data: findedMovies = [],
+    isLoading,
+    isFetching: isSearchFetching,
+  } = useSearchMovieByNameQuery(searchValue, {
+    skip: searchValue === '',
+  });
 
-      movies = movies.map((movie: MovieMainInfo) => ({
-        ...movie,
-        poster_path: getFullPosterPath(movie.poster_path),
-      }));
+  const movies: MovieMainInfo[] = popularMovies.length !== 0 ? popularMovies : findedMovies;
 
-      setMovies(movies);
-      setIsLoading(false);
-    } catch (err) {
-      setIsLoading(false);
-    }
-  };
+  const searchHandler = useCallback(
+    (searchText: string): void => {
+      dispatch(setSearchMovie(searchText));
+    },
+    [dispatch]
+  );
 
-  useEffect(() => {
-    setIsLoading(true);
-    const controller = new AbortController();
-    requestMovies(controller);
-
-    return () => {
-      controller.abort();
-      setIsLoading(false);
-    };
-  }, []);
-
-  useEffect(() => {
-    setIsLoading(true);
-    const controller = new AbortController();
-    requestMovies(controller, searchValue);
-
-    return () => {
-      setIsLoading(false);
-      controller.abort();
-    };
-  }, [searchValue]);
-
-  useEffect(() => {
-    if (selectedMovieId === 0) return;
-
-    const controller = new AbortController();
-    setIsLoading(true);
-
-    const getMovieDetails = async (id: number) => {
-      const details = await getMovieDetailsById(id, controller);
-      setIsLoading(false);
-      setMovieDetails(details);
-      setShowModal(true);
-    };
-
-    getMovieDetails(selectedMovieId);
-
-    return () => {
-      if (selectedMovieId === 0) return;
-
-      setIsLoading(false);
-      controller.abort();
-    };
-  }, [selectedMovieId]);
-
-  const searchHandler = (searchText: string): void => {
-    setSearchValue(searchText);
-  };
-
-  const movieChosen = (id: number): void => {
+  const movieChosen = useCallback((id: number): void => {
     setSelectedMovieId(id);
-  };
+    setShowModal(true);
+  }, []);
 
   const onClose = () => {
     setShowModal(false);
     setSelectedMovieId(0);
   };
 
+  const renderModal = (
+    <ClientOnlyPortal>
+      <DetailsModal onClose={onClose} selectedMovieId={selectedMovieId} />
+    </ClientOnlyPortal>
+  );
+
+  const renderMovies =
+    isFetching || isLoading || isSearchFetching ? (
+      <Loader />
+    ) : (
+      <MovieCards movies={movies} clickHandler={movieChosen} />
+    );
+
   return (
     <div className="main-page__container">
       <SearchBar searchSubmit={searchHandler} />
-      {movieDetails &&
-        showModal &&
-        createPortal(
-          <Modal onClose={onClose}>
-            <MovieDetails movieDetails={movieDetails} />
-          </Modal>,
-          document.body
-        )}
-      <MovieCards movies={movies} isLoading={isLoading} clickHandler={movieChosen} />
+      {renderMovies}
+      {showModal && renderModal}
     </div>
   );
 };

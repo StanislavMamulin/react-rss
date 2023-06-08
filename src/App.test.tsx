@@ -1,11 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
+import { render, screen, fireEvent } from './utilities/test-utils';
 import App from './App';
 
 describe('App rendering', () => {
   it('should render header', async () => {
-    render(<App />, { wrapper: BrowserRouter });
+    render(<App />);
 
     const topMovies = screen.getByText(/^popular movies/i);
     expect(topMovies).toBeInTheDocument();
@@ -13,15 +12,8 @@ describe('App rendering', () => {
     expect(navigationLinks).toHaveLength(3);
   });
 
-  it('should render main page', async () => {
-    render(<App />, { wrapper: BrowserRouter });
-
-    const movies = await screen.findAllByText(/release/i);
-    expect(movies).toHaveLength(20);
-  });
-
   it('should work navigation', () => {
-    render(<App />, { wrapper: BrowserRouter });
+    render(<App />);
 
     let aboutPageTitle = screen.queryByRole('heading', { level: 1, name: 'About Us' });
     expect(aboutPageTitle).not.toBeInTheDocument();

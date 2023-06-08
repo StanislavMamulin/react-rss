@@ -1,4 +1,4 @@
-import { Country } from 'data/Countries.model';
+import { Country } from '../../../data/Countries.model';
 
 export type CardsProps = {
   countries: Country[];

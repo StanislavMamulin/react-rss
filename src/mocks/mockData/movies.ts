@@ -1,4 +1,4 @@
-import { MovieDetails, MovieResponses } from 'data/Movies.model';
+import { MovieDetails, MovieResponses } from '../../data/Movies.model';
 
 export const popularMovies: MovieResponses = {
   page: 1,
@@ -773,4 +773,11 @@ export const lotrttt: MovieDetails = {
   video: false,
   vote_average: 8.377,
   vote_count: 19549,
+};
+
+export const nothingFound: MovieResponses = {
+  page: 1,
+  results: [],
+  total_pages: 1,
+  total_results: 0,
 };

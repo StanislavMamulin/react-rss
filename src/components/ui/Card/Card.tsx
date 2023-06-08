@@ -1,4 +1,4 @@
-import { Country } from 'data/Countries.model';
+import { Country } from '../../../data/Countries.model';
 import { CardProps } from './Card.model';
 import { CardImage } from './CardImage/CardImage';
 import './Card.scss';

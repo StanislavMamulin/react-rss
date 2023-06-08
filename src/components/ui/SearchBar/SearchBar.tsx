@@ -1,28 +1,28 @@
 import { BaseSyntheticEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
-import { SEARCH_STORE_KEY } from './constants';
-
-import SearchLogo from '../../../assets/icons/search.svg';
-import ClearLogo from '../../../assets/icons/clear.svg';
 
 import './SearchBar.scss';
 import { SearchProps } from './SearchBar.model';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../redux/store';
+import { setSearchMovie } from '../../../redux/movieSlice';
 
 const INITIAL_SEARCH_VALUE = '';
 
 export const SearchBar = ({ searchSubmit }: SearchProps): JSX.Element => {
   const [searchValue, setSearchValue] = useState<string>(INITIAL_SEARCH_VALUE);
   const searchText = useRef(searchValue);
+  const savedSearch = useSelector((state: RootState) => state.movies.searchMovieName);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const savedSearch: string = localStorage.getItem(SEARCH_STORE_KEY) || INITIAL_SEARCH_VALUE;
     setSearchValue(savedSearch);
     searchText.current = savedSearch;
     searchSubmit(savedSearch);
 
     return () => {
-      localStorage.setItem(SEARCH_STORE_KEY, searchText.current);
+      dispatch(setSearchMovie(searchText.current));
     };
-  }, [searchSubmit]);
+  }, [dispatch, savedSearch, searchSubmit]);
 
   useEffect(() => {
     if (searchValue !== INITIAL_SEARCH_VALUE) {
@@ -36,7 +36,6 @@ export const SearchBar = ({ searchSubmit }: SearchProps): JSX.Element => {
     setSearchValue(searchTextValue);
 
     if (searchTextValue.length === 0) {
-      localStorage.removeItem(SEARCH_STORE_KEY);
       searchText.current = INITIAL_SEARCH_VALUE;
     }
   };
@@ -45,7 +44,6 @@ export const SearchBar = ({ searchSubmit }: SearchProps): JSX.Element => {
     event.preventDefault();
 
     setSearchValue(INITIAL_SEARCH_VALUE);
-    localStorage.removeItem(SEARCH_STORE_KEY);
     searchText.current = INITIAL_SEARCH_VALUE;
   };
 
@@ -57,7 +55,7 @@ export const SearchBar = ({ searchSubmit }: SearchProps): JSX.Element => {
 
   return (
     <div className="search-bar__wrapper">
-      <img src={SearchLogo} alt="Search" className="search-bar__icon"></img>
+      <img src="/icons/search.svg" alt="Search" className="search-bar__icon"></img>
       <input
         className="search-bar__input"
         type={'text'}
@@ -68,7 +66,7 @@ export const SearchBar = ({ searchSubmit }: SearchProps): JSX.Element => {
       ></input>
       {searchValue.length > 0 && (
         <div role="button" className="search-bar__clear-wrapper" onMouseDown={clearHandler}>
-          <img src={ClearLogo} alt="Clear search" className="search-bar__clear-icon" />
+          <img src="/icons/clear.svg" alt="Clear search" className="search-bar__clear-icon" />
         </div>
       )}
     </div>

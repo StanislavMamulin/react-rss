@@ -1,12 +1,21 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
+import { render, screen, fireEvent, act } from '../../utilities/test-utils';
 import { MainPage } from './MainPage';
+import { server } from '../../mocks/server';
 
 describe('Main page', () => {
+  beforeAll(() => {
+    server.listen();
+  });
+
   beforeEach(() => {
     act(() => {
       render(<MainPage />);
     });
+  });
+
+  afterAll(() => {
+    server.close();
   });
 
   it('should render main page', async () => {
@@ -29,7 +38,7 @@ describe('Main page', () => {
     });
 
     const lords = await screen.findAllByText(/lord/i);
-    expect(lords.length).toEqual(13);
+    expect(lords.length).toEqual(15);
   });
 
   it('should show detail movie information in modal window', async () => {
@@ -43,5 +52,23 @@ describe('Main page', () => {
 
     movieOverview = await screen.findByText(/overview/i);
     expect(movieOverview).toBeInTheDocument();
+  });
+
+  it('should display "Nothing found" if nothing found', async () => {
+    const searchInput = screen.getByPlaceholderText(/search/i);
+    fireEvent.input(searchInput, {
+      target: {
+        value: 'notexistsmovie',
+      },
+    });
+
+    fireEvent.keyDown(searchInput, {
+      key: 'Enter',
+      code: 'Enter',
+      charCode: 13,
+    });
+
+    const infoText = await screen.findByText(/nothing/i);
+    expect(infoText).toBeInTheDocument();
   });
 });
