@@ -1,0 +1,7 @@
+{
+  "watch": [
+    "cypress/",
+    "src/"
+  ],
+  "ext": "ts, tsx, scss"
+}

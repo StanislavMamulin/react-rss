@@ -1,0 +1,47 @@
+.create-page__container {
+  margin-top: 88px;
+}
+
+.cards-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.name-error {
+  margin: 0;
+  color: red;
+  font-weight: bold;
+}
+
+.create-page__continent-image {
+  width: 50%;
+  height: 50%;
+  
+  object-fit: contain;
+}
+
+.created {
+  width: 100%;
+  height: 300px;
+  position: fixed;
+  border-radius: 10px;
+
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 2s forwards;
+}
+
+@keyframes fadeIn {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+.created__text {
+  color: white;
+  font-size: 32px;
+}
